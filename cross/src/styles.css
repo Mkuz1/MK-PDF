@@ -345,3 +345,11 @@ textarea.translation { width: 100%; min-height: 50vh; resize: vertical; font: in
 .reader-text p { margin: 0 0 0.8em; } .reader-text ul { margin: 0 0 0.4em; padding-inline-start: 1.4em; }
 .reader-table { overflow-x: auto; margin: 0 0 1em; } .reader-table table { border-collapse: collapse; font-size: 0.85em; } .reader-table td, .reader-table th { border: 1px solid rgba(120, 115, 140, 0.4); padding: 4px 8px; text-align: start; vertical-align: top; }
 .reader-page { text-align: center; font-size: 11px; color: #8a8796; margin: 1.4em 0 0.6em; letter-spacing: 0.08em; } .reader-page::before, .reader-page::after { content: ' — '; }
+
+.licences { max-height: 55vh; overflow: auto; white-space: pre-wrap; font: 11px/1.5 ui-monospace, 'Noto Sans Mono', monospace; background: rgba(120, 115, 140, 0.08); border-radius: 10px; padding: 12px; user-select: text; }
+.about-link { margin-top: 10px; font-size: 13px; color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+
+.draft-list { margin: 0 0 8px; padding-inline-start: 18px; display: flex; flex-direction: column; gap: 4px; }
+
+.crash { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 24px; text-align: center; }
+.crash h1 { font-size: 20px; } .crash p { max-width: 34em; }

@@ -7,7 +7,11 @@ struct MKPDFCommands: Commands {
 
     var body: some Commands {
         CommandGroup(after: .appInfo) {
+            #if !APPSTORE
             Button("Check for Updates…") { UpdateChecker.shared.check(userInitiated: true) }
+            #endif
+            Button("Acknowledgements") { openWindow(id: "acknowledgements") }
+            Button("Privacy Policy") { NSWorkspace.shared.open(Acknowledgements.privacyPolicy) }
         }
         CommandGroup(after: .newItem) {
             Button("Home") { openWindow(id: "home") }.keyboardShortcut("0", modifiers: [.command, .shift])

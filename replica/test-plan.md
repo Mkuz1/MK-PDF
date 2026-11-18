@@ -32,6 +32,7 @@ errors and 5xx responses; the release check to GitHub is answered locally so tes
 | F12 | save, tabs, closing |
 | F14 | find and replace across the document |
 | F15 | reading view (reflowed for phones) |
+| F16 | recovering unsaved work; About, privacy and licences |
 | F13 | repair, compare, watermark, header and footer |
 | A11Y | axe scan of seven screens (serious and critical issues fail) |
 
@@ -140,6 +141,11 @@ errors and 5xx responses; the release check to GitHub is answered locally so tes
 | F15-H1 | F15 | happy | open Reading view (desktop and phone) | 3 headings, paragraphs, no page numbers, contents jumps, Escape closes, no sideways scroll | e2e | pass |
 | F15-H2 | F15 | happy | larger text, line spacing, reopen | size and spacing change and are remembered | e2e | pass |
 | F15-E1 | F15 | edge: scan without text | open Reading view | explains to recognise text first | e2e | pass |
+| F16-H1 | F16 | happy | change a document, restart the app, Restore | change back, still unsaved; after saving nothing is offered | e2e | pass |
+| F16-E1 | F16 | edge: Discard | restart, Discard, restart | nothing offered | e2e | pass |
+| F16-E2 | F16 | edge: password-protected | protect, restart | never kept as a draft | e2e | pass |
+| F16-E3 | F16 | edge: no changes | open, restart | nothing offered | e2e | pass |
+| F16-H2 | F16 | happy | Home › About MK PDF › Open-source licences | version, privacy statement, Apache/OFL/MIT texts | e2e | pass |
 | A11Y S01–S07 | all | edge: screen reader labels, contrast | axe scan per screen | no serious or critical issues | e2e | pass after BUG-008/009 fixes |
 
 ## Edge cases that don't apply

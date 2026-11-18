@@ -454,7 +454,8 @@ function MorePanel() {
       <Row icon="batch" title="Batch process files…" detail="Compress, OCR, number, watermark, protect or convert many PDFs" onClick={() => (dialog.value = { kind: 'batch' })} />
       {platform.print && <Row icon="print" title="Print…" onClick={actions.printActive} />}
       {platform.share && <Row icon="share" title="Share…" onClick={actions.shareActive} />}
-      {platform.kind !== 'web' && <Row icon="refresh" title="Check for updates" detail={`You have MK PDF ${platform.version}`} onClick={() => void import('./Update').then((u) => u.checkForUpdates(true))} />}
+      <Row icon="info" title="About MK PDF" detail="Version, privacy and licences" onClick={() => (dialog.value = { kind: 'about' })} />
+      {platform.updates && <Row icon="refresh" title="Check for updates" detail={`You have MK PDF ${platform.version}`} onClick={() => void import('./Update').then((u) => u.checkForUpdates(true))} />}
     </>
   );
 }

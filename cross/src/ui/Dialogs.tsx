@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { active, dialog, placing, showSaved, showToast, tool } from '../app/store';
+import { active, dialog, discardDrafts, placing, restoreDrafts, showSaved, showToast, tool } from '../app/store';
 import * as actions from '../app/actions';
 import * as ops from '../pdf/ops';
 import { platform } from '../app/platform';
@@ -299,6 +299,47 @@ function TranslationDialog({ text, name }: { text: string; name: string }) {
   );
 }
 
+/** Unsaved work found from last time (the app was closed or stopped before saving). */
+function DraftsDialog({ drafts }: { drafts: import('../app/drafts').Draft[] }) {
+  return (
+    <div class="scrim">
+      <div class="sheet glass" role="dialog" aria-label="Restore unsaved changes?">
+        <h2>Restore unsaved changes?</h2>
+        <p class="muted">MK PDF closed before {drafts.length === 1 ? 'this document was' : 'these documents were'} saved:</p>
+        <ul class="draft-list">{drafts.map((d) => <li key={d.key}><b>{d.name}</b> <small class="muted">{new Date(d.at).toLocaleString()}</small></li>)}</ul>
+        <div class="sheet-buttons">
+          <button class="glass-btn" onClick={() => { close(); void discardDrafts(drafts.map((d) => d.key)); }}>Discard</button>
+          <button class="glass-btn prominent" onClick={() => { close(); void restoreDrafts(drafts); }}>Restore</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Version, what the app does with your files (nothing leaves the device), and the open-source licences. */
+export const PRIVACY_URL = 'https://github.com/mohamdbeam-star/MK-PDF/blob/main/PRIVACY.md';
+function AboutDialog() {
+  const [licences, setLicences] = useState<string | null>(null);
+  const show = async () => setLicences(await fetch(new URL('licenses.txt', document.baseURI)).then((r) => (r.ok ? r.text() : Promise.reject())).catch(() => 'The licence texts could not be loaded.'));
+  return (
+    <Sheet title="About MK PDF" wide={licences !== null}>
+      {licences === null ? <>
+        <p><b>MK PDF {platform.version}</b></p>
+        <p class="muted">Your documents stay on this device. MK PDF has no accounts, no ads and no tracking, and it doesn't collect or send any data.
+          {platform.updates ? ' It only contacts the project’s release page to look for new versions.' : ''}</p>
+        <div class="sheet-buttons stack">
+          <button class="glass-btn" onClick={() => platform.openExternal(PRIVACY_URL)}>Privacy policy</button>
+          <button class="glass-btn" onClick={show}>Open-source licences</button>
+        </div>
+      </> : <pre class="licences" tabIndex={0}>{licences}</pre>}
+      <div class="sheet-buttons">
+        {licences !== null && <button class="glass-btn" onClick={() => setLicences(null)}>Back</button>}
+        <button class="glass-btn prominent" onClick={close}>Done</button>
+      </div>
+    </Sheet>
+  );
+}
+
 function PropertiesDialog() {
   const d = active.value;
   const [m, setM] = useState({ title: '', author: '', subject: '', keywords: '' });
@@ -341,6 +382,8 @@ export function Dialogs() {
     case 'batch': return <BatchDialog />;
     case 'translation': return <TranslationDialog {...(p as { text: string; name: string })} />;
     case 'properties': return <PropertiesDialog />;
+    case 'about': return <AboutDialog />;
+    case 'drafts': return <DraftsDialog {...p} />;
     case 'compare': return <Compare onClose={close} />;
     default: return null;
   }

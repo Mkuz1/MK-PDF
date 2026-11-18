@@ -15,18 +15,30 @@ VERSION=$(tr -d '[:space:]' < VERSION 2>/dev/null || echo 1.0.0)
 BUILD=${BUILD_NUMBER:-$(git rev-list --count HEAD 2>/dev/null || echo 1)}
 
 # The document conversion engine (shared with the Windows and Android apps) runs inside the app.
-(cd cross && { [[ -d node_modules ]] || npm ci --no-audit --no-fund; } && npm run --silent build:core)
+(cd cross && { [[ -d node_modules ]] || npm ci --no-audit --no-fund; } && npm run --silent build:core && node scripts/copy-assets.mjs >/dev/null)
 
 # UNIVERSAL=1 builds one binary for Apple Silicon and Intel.
 ARCH_FLAGS=()
 [[ ${UNIVERSAL:-0} == 1 ]] && ARCH_FLAGS=(--arch arm64 --arch x86_64)
+# MAS=1 builds the Mac App Store variant: sandboxed, no self-updater, no network use (see STORE.md). It goes to its
+# own folder so it never replaces the regular build.
+MAS=${MAS:-0}
+ENTITLEMENTS=MKPDF.entitlements
+OUT=.
+if [[ $MAS == 1 ]]; then
+  ARCH_FLAGS+=(-Xswiftc -DAPPSTORE --scratch-path .build-appstore)
+  ENTITLEMENTS=MKPDF-AppStore.entitlements
+  OUT=build-appstore
+  mkdir -p "$OUT"
+fi
 swift build -c release --product MKPDF "${ARCH_FLAGS[@]}"
 BIN=$(swift build -c release "${ARCH_FLAGS[@]}" --show-bin-path)/MKPDF
-APP="MK PDF.app"
+APP="$OUT/MK PDF.app"
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN" "$APP/Contents/MacOS/MKPDF"
 cp cross/dist-core/core.js "$APP/Contents/Resources/core.js"
+cp cross/public/licenses.txt "$APP/Contents/Resources/licenses.txt"
 
 ICONSET=$(mktemp -d)/AppIcon.iconset
 mkdir -p "$ICONSET"
@@ -53,6 +65,8 @@ cat > "$APP/Contents/Info.plist" <<PLIST
   <key>LSMinimumSystemVersion</key><string>15.0</string>
   <key>LSApplicationCategoryType</key><string>public.app-category.productivity</string>
   <key>NSHighResolutionCapable</key><true/>
+  <key>ITSAppUsesNonExemptEncryption</key><false/>
+  <key>NSHumanReadableCopyright</key><string>© $(date +%Y) MK PDF</string>
   <key>NSPrincipalClass</key><string>NSApplication</string>
   <key>CFBundleDocumentTypes</key>
   <array>
@@ -69,5 +83,13 @@ PLIST
 
 # Ad-hoc signature (required to run on Apple Silicon). Set SIGN_IDENTITY to a Developer ID certificate
 # for a build Gatekeeper accepts without the right-click → Open step.
-codesign --force --deep --options runtime --entitlements MKPDF.entitlements --sign "${SIGN_IDENTITY:--}" "$APP"
+# The App Store build also carries its provisioning profile (PROVISIONING_PROFILE=path) when one is given.
+[[ $MAS == 1 && -n ${PROVISIONING_PROFILE:-} ]] && cp "$PROVISIONING_PROFILE" "$APP/Contents/embedded.provisionprofile"
+codesign --force --deep --options runtime --entitlements "$ENTITLEMENTS" --sign "${SIGN_IDENTITY:--}" "$APP"
 echo "Built $(pwd)/$APP (version $VERSION, build $BUILD)"
+# With INSTALLER_IDENTITY ("3rd Party Mac Developer Installer: …") the App Store build is wrapped in the .pkg that
+# Transporter or `xcrun altool` uploads.
+if [[ $MAS == 1 && -n ${INSTALLER_IDENTITY:-} ]]; then
+  productbuild --component "$APP" /Applications --sign "$INSTALLER_IDENTITY" "$OUT/MK-PDF-$VERSION.pkg"
+  echo "Packaged $(pwd)/$OUT/MK-PDF-$VERSION.pkg"
+fi

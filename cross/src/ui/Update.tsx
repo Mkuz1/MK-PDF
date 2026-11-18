@@ -42,7 +42,7 @@ async function fromPage(): Promise<Release | undefined> {
 /** Looks for the newest release carrying this platform's installer. */
 let lastCheck = 0;
 export async function checkForUpdates(userInitiated = false) {
-  if (platform.kind === 'web') return;
+  if (!platform.updates) return;
   lastCheck = Date.now();
   let best: Release | undefined;
   try {
@@ -60,6 +60,7 @@ export async function checkForUpdates(userInitiated = false) {
 
 /** Checks shortly after launch, every hour, and whenever the app comes back to the front (at most every 15 minutes). */
 export function startUpdateChecks() {
+  if (!platform.updates) return;
   setTimeout(() => checkForUpdates(false), 4000);
   setInterval(() => checkForUpdates(false), 3600 * 1000);
   const soon = () => { if (document.visibilityState === 'visible' && Date.now() - lastCheck > 15 * 60 * 1000) void checkForUpdates(false); };

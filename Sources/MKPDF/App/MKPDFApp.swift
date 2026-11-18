@@ -6,7 +6,10 @@ import UserNotifications
 struct MKPDFApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
+    #if !APPSTORE
+    // Command-line self-tests, used to verify releases (not in the App Store build).
     init() { EditSmokeTest.runIfRequested() }
+    #endif
 
     var body: some Scene {
         DocumentGroup(newDocument: { PDFFileDocument() }) { file in
@@ -37,6 +40,11 @@ struct MKPDFApp: App {
             }
         }
         .defaultSize(width: 1200, height: 800)
+
+        Window("Acknowledgements", id: "acknowledgements") {
+            Acknowledgements()
+        }
+        .defaultSize(width: 640, height: 560)
 
         Settings {
             SettingsView()

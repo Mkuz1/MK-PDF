@@ -190,10 +190,14 @@ struct SettingsView: View {
             Picker("Appearance", selection: Binding(get: { Appearance.current }, set: { Appearance.apply($0) })) {
                 ForEach(Appearance.allCases) { Text($0.rawValue).tag($0) }
             }
+            #if !APPSTORE
             Toggle("Check for updates automatically", isOn: Binding(get: { UpdateChecker.shared.automatic },
                                                                    set: { UpdateChecker.shared.automatic = $0 }))
+            #endif
             LabeledContent("Version", value: UpdateChecker.currentVersion)
+            #if !APPSTORE
             Button("Check for Updates Now") { UpdateChecker.shared.check(userInitiated: true) }
+            #endif
         }
         .padding(20)
         .frame(width: 420)

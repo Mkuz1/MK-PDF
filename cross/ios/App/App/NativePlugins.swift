@@ -99,9 +99,18 @@ public class OpenFilePlugin: CAPPlugin, CAPBridgedPlugin, UIDocumentPickerDelega
 public class UpdaterPlugin: CAPPlugin, CAPBridgedPlugin, UNUserNotificationCenterDelegate {
     public let identifier = "UpdaterPlugin"
     public let jsName = "Updater"
-    public let pluginMethods: [CAPPluginMethod] = [CAPPluginMethod(name: "notify", returnType: CAPPluginReturnPromise)]
+    public let pluginMethods: [CAPPluginMethod] = [
+        CAPPluginMethod(name: "notify", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "info", returnType: CAPPluginReturnPromise),
+    ]
 
     override public func load() { UNUserNotificationCenter.current().delegate = self }
+
+    /// An App Store build never looks for updates itself (anything but an explicit NO counts as a store build).
+    @objc func info(_ call: CAPPluginCall) {
+        let flag = (Bundle.main.object(forInfoDictionaryKey: "MKPDFStoreBuild") as? String ?? "YES").uppercased()
+        call.resolve(["store": flag != "NO"])
+    }
 
     @objc func notify(_ call: CAPPluginCall) {
         let content = UNMutableNotificationContent()

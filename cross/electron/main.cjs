@@ -68,6 +68,8 @@ function createWindow() {
     items.push({ role: 'cut' }, { role: 'copy' }, { role: 'paste' }, { type: 'separator' }, { role: 'selectAll' });
     Menu.buildFromTemplate(items).popup({ window: win });
   });
+  // The window only ever shows the app itself; links open in the browser.
+  win.webContents.on('will-navigate', (e, url) => { if (!url.startsWith('app://mkpdf/')) e.preventDefault(); });
   win.webContents.setWindowOpenHandler(({ url }) => { if (/^https:\/\//.test(url)) shell.openExternal(url); return { action: 'deny' }; });
   win.on('close', (e) => {
     if (!dirty) return;
@@ -94,6 +96,9 @@ app.on('window-all-closed', () => app.quit());
 // --- Bridge (see preload.cjs and src/app/platform.ts) ---
 
 ipcMain.on('version', (e) => { e.returnValue = app.getVersion(); });
+// Installed from the Microsoft Store: the Store updates the app, so it never checks for or installs updates itself.
+const STORE = !!process.windowsStore || process.env.MKPDF_STORE === '1';
+ipcMain.on('store', (e) => { e.returnValue = STORE; });
 ipcMain.handle('pending-files', () => {
   listening = true;
   return queued.splice(0).flatMap((p) => { try { return [fileInfo(p)]; } catch { return []; } });
@@ -115,7 +120,8 @@ ipcMain.handle('open-dialog', async (_e, accept, multiple) => {
   return r.canceled ? [] : r.filePaths.map(fileInfo);
 });
 
-ipcMain.handle('read-file', async (_e, p) => { try { return fileInfo(p); } catch { return null; } });
+// Reopening a recent file: PDFs only.
+ipcMain.handle('read-file', async (_e, p) => { try { return /\.pdf$/i.test(String(p)) ? fileInfo(p) : null; } catch { return null; } });
 
 ipcMain.handle('save', async (_e, name, data, existing, saveAs) => {
   let target = existing && !saveAs ? existing : null;
@@ -132,7 +138,7 @@ ipcMain.handle('save', async (_e, name, data, existing, saveAs) => {
 ipcMain.handle('save-many', async (_e, files) => {
   const r = await dialog.showOpenDialog(win, { title: 'Choose a folder', properties: ['openDirectory', 'createDirectory'] });
   if (r.canceled || !r.filePaths[0]) return null;
-  for (const f of files) fs.writeFileSync(path.join(r.filePaths[0], f.name), Buffer.from(f.data));
+  for (const f of files) fs.writeFileSync(path.join(r.filePaths[0], path.basename(f.name)), Buffer.from(f.data));
   return r.filePaths[0];
 });
 
@@ -175,6 +181,7 @@ ipcMain.on('set-dirty', (_e, value) => { dirty = !!value; });
 // Updates: download the new installer to the temp folder, run it silently and quit. It installs per user over this
 // copy (no admin, nothing to uninstall) and starts the new version when it's done (--force-run).
 ipcMain.handle('install-update', async (_e, url, name) => {
+  if (STORE) throw new Error('Updates come from the Microsoft Store.');
   if (!/^https:\/\/(github\.com|objects\.githubusercontent\.com|release-assets\.githubusercontent\.com)\//.test(url)) throw new Error('Unexpected update location');
   const res = await net.fetch(url);
   if (!res.ok) throw new Error(`Download failed (${res.status})`);

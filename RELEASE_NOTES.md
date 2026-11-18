@@ -1,20 +1,17 @@
-## What's new in MK PDF 1.3.16
+## What's new in MK PDF 1.3.17
 
-**Editing text** (Windows, Android, iPhone): the bar above the text you're editing has more:
-- Justify, underline, and a font menu (the paragraph's own font or Arial, Times New Roman, Georgia, Courier New, Noto Sans, Noto Serif).
-- Bulleted and numbered lists, line spacing, and space after paragraphs.
-- Letter spacing and letter width.
-- Superscript and subscript for selected digits, signs and small letters (m², H₂O); they stay searchable.
+**Your work is safe** (Windows, Android, iPhone)
+- If MK PDF closes or stops before you save, it offers your unsaved changes back the next time it opens. Password-protected documents are never kept.
+- If something goes wrong in the app, you see a Restart button instead of an empty window.
 
-**Spell check**
-- Windows underlines misspellings as you type; right-click for suggestions, Add to dictionary, and Cut, Copy and Paste.
-- Mac underlines misspellings in the text editor; Control-click for suggestions.
+**About MK PDF**
+- New About screen (Home, or More Tools) with the version, the privacy statement and the licences of the open-source software MK PDF includes. On the Mac: MK PDF menu › Acknowledgements and Privacy Policy.
+- MK PDF collects no data: no accounts, no ads, no tracking. The privacy policy is in the project as PRIVACY.md.
 
-**Export**
-- Export part of a page: Export › Selected area…, drag a box, then choose Word, Excel or CSV (Windows, Android, iPhone).
-- Include pictures: turn off to export only text and tables (all platforms).
-- Include comments: the PDF's comments become Word comments on the nearest paragraph, with author, date and replies (all platforms).
-- Mac: the Export panel now offers Word as flowing text or with the page layout kept, like the other platforms.
-- Extract embedded images can skip small pictures such as icons (Windows, Android, iPhone).
+**Android**
+- The Back button closes the open dialog, panel or view first, then leaves the app.
 
-Includes everything in 1.3.15.
+**Getting ready for the app stores**
+- Store editions for iPhone and iPad, Mac, Android and Windows that are updated by their store and never connect to the internet. The copies on this page keep updating themselves as before.
+
+Includes everything in 1.3.16.

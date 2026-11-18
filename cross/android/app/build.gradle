@@ -31,6 +31,13 @@ android {
             }
         }
     }
+    // Two channels: "direct" is the APK on the project's release page (it updates itself); "play" is the bundle for
+    // Google Play (no update code, no permission to install packages).
+    flavorDimensions = ["channel"]
+    productFlavors {
+        direct { dimension "channel" }
+        play { dimension "channel" }
+    }
     buildTypes {
         release {
             if (System.getenv('KEYSTORE_FILE')) signingConfig signingConfigs.release

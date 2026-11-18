@@ -33,6 +33,12 @@ import java.net.URL;
 public class UpdaterPlugin extends Plugin {
     private static final String CHANNEL = "updates";
 
+    /** This build updates itself (the Play build doesn't: Google Play updates it). */
+    @PluginMethod
+    public void info(PluginCall call) {
+        call.resolve(new com.getcapacitor.JSObject().put("store", false));
+    }
+
     @PluginMethod
     public void install(PluginCall call) {
         String url = call.getString("url");

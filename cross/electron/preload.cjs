@@ -3,6 +3,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('mkpdf', {
   version: ipcRenderer.sendSync('version'),
+  store: ipcRenderer.sendSync('store'),
   openDialog: (accept, multiple) => ipcRenderer.invoke('open-dialog', accept, multiple),
   readFile: (p) => ipcRenderer.invoke('read-file', p),
   save: (name, data, p, saveAs) => ipcRenderer.invoke('save', name, data, p, saveAs),

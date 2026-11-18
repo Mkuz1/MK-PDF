@@ -4,6 +4,7 @@ import { DocModel } from '../pdf/doc';
 import type { AnnotInfo } from '../pdf/annots';
 import type { GraphicObject } from '../engine/pageContent';
 import { platform, type OpenedFile } from './platform';
+import { draftKey, listDrafts, removeDraft, watchDrafts } from './drafts';
 
 export type Tool =
   | 'select' | 'hand' | 'editContent'
@@ -106,10 +107,12 @@ export async function task<T>(label: string, work: (progress: (p: number) => voi
   }
 }
 
-export async function openDocument(file: OpenedFile) {
+export async function openDocument(file: OpenedFile, draft?: string) {
   const existing = file.path ? docs.value.find((d) => d.path === file.path) : undefined;
   if (existing) { activeId.value = existing.id; return; }
   const model = new DocModel(file.name, file.bytes, file.path);
+  // Restored unsaved work: still unsaved, and it keeps updating the same draft.
+  if (draft) { draftKey(model, draft); model.dirty.value = true; }
   try {
     await model.load();
   } catch (e) {
@@ -173,3 +176,14 @@ export async function saveActive(saveAs = false) {
     showSaved(`Saved to ${r.label}`);
   });
 }
+
+// Unsaved changes are kept on this device until saved or closed, and offered back at the next launch.
+watchDrafts(docs);
+export async function offerDrafts() {
+  const drafts = (await listDrafts()).sort((a, b) => b.at - a.at);
+  if (drafts.length) dialog.value = { kind: 'drafts', props: { drafts } };
+}
+export async function restoreDrafts(drafts: { key: string; name: string; path?: string; bytes: Uint8Array }[]) {
+  for (const d of drafts) await openDocument({ name: d.name, bytes: d.bytes, path: d.path }, d.key);
+}
+export const discardDrafts = (keys: string[]) => Promise.all(keys.map(removeDraft));

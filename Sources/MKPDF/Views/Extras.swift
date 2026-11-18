@@ -174,3 +174,23 @@ enum OverlayCompare {
         return NSImage(cgImage: out, size: NSSize(width: w, height: h))
     }
 }
+
+/// The open-source software and fonts MK PDF includes, with their licences (the app bundle carries the text).
+struct Acknowledgements: View {
+    static let privacyPolicy = URL(string: "https://github.com/mohamdbeam-star/MK-PDF/blob/main/PRIVACY.md")!
+    private let text: String = Bundle.main.url(forResource: "licenses", withExtension: "txt")
+        .flatMap { try? String(contentsOf: $0, encoding: .utf8) } ?? "The licence texts are missing from this copy of MK PDF."
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Your documents stay on this Mac. MK PDF has no accounts, no ads and no tracking, and it doesn't collect or send any data.")
+                .font(.callout).foregroundStyle(.secondary)
+            ScrollView {
+                Text(text).font(.system(size: 11, design: .monospaced)).textSelection(.enabled)
+                    .frame(maxWidth: .infinity, alignment: .leading).padding(10)
+            }
+            .background(.quaternary.opacity(0.4), in: RoundedRectangle(cornerRadius: 8))
+        }
+        .padding(16)
+    }
+}

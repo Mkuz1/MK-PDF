@@ -29,6 +29,24 @@ enum Notifier {
     }
 }
 
+#if APPSTORE
+/// The Mac App Store build: the App Store updates the app, so nothing here checks for, downloads or installs
+/// anything, and the app never contacts a server.
+final class UpdateChecker {
+    static let shared = UpdateChecker()
+    static var currentVersion: String { Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0" }
+    func startAutomaticChecks() {}
+    func check(userInitiated: Bool) {}
+    func promptToInstall() {}
+    func downloadAndInstall() {}
+    @discardableResult func installStagedUpdate(relaunch: Bool) -> Bool { false }
+    func runInstallTestIfRequested() {}
+}
+
+struct UpdateBanner: View {
+    var body: some View { EmptyView() }
+}
+#else
 /// Checks GitHub Releases for a newer MK PDF and offers to download it.
 final class UpdateChecker: ObservableObject {
     static let shared = UpdateChecker()
@@ -348,3 +366,4 @@ struct UpdateBanner: View {
         }
     }
 }
+#endif

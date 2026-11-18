@@ -15,7 +15,7 @@ export function Home() {
   ];
   return (
     <div class="home">
-      <div class="home-main">
+      <main class="home-main">
         <div class="brand">
           <img src="icon.png" alt="" width={48} height={48} />
           <div><h1>MK PDF</h1><p class="muted">View, edit, sign and convert PDFs</p></div>
@@ -30,7 +30,8 @@ export function Home() {
           ))}
         </div>
         {!platform.mobile && <p class="muted drop-hint">…or drop PDF files anywhere in this window.</p>}
-      </div>
+        <button class="link about-link" onClick={() => (dialog.value = { kind: 'about' })}>About MK PDF</button>
+      </main>
       <aside class="recents glass">
         <div class="recents-head"><b>Recent</b>{recents.value.length > 0 && <button class="link" onClick={clearRecents}>Clear</button>}</div>
         {!recents.value.length && <p class="muted">Files you open appear here.</p>}

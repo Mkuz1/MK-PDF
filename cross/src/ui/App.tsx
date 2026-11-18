@@ -135,6 +135,25 @@ export function App() {
     window.addEventListener('drop', drop);
     window.addEventListener('dragover', over);
     platform.confirmClose?.(() => docs.value.some((x) => x.dirty.value));
+    // Back closes what is on top, one layer at a time: a dialog, the reading view, read mode, the tools sheet or
+    // sidebar on a phone, the page grid, an armed tool. With nothing left, Android puts the app in the background.
+    platform.onBack?.(() => {
+      const narrow = window.innerWidth <= 860;
+      if (busy.value) return true;
+      const top = dialog.value;
+      if (top) {
+        // The word review must be finished; a question (a prompt, a choice) is answered as cancelled.
+        if (top.kind !== 'ocrReview') { dialog.value = null; (top.props?.resolve as ((v: null) => void) | undefined)?.(null); }
+        return true;
+      }
+      if (readingView.value) { readingView.value = false; return true; }
+      if (readMode.value) { exitReadMode(); return true; }
+      if (narrow && showPanel.value) { showPanel.value = false; return true; }
+      if (narrow && showSidebar.value) { showSidebar.value = false; return true; }
+      if (organizing.value) { organizing.value = false; return true; }
+      if (tool.value !== 'select') { tool.value = 'select'; return true; }
+      return false;
+    });
     return () => { window.removeEventListener('keydown', key); window.removeEventListener('drop', drop); window.removeEventListener('dragover', over); };
   }, []);
 

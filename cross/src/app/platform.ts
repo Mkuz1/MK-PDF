@@ -6,6 +6,9 @@ export interface Platform {
   /** A phone or tablet (Android or iPhone): camera scanning, sheets instead of side panels. */
   mobile: boolean;
   version: string;
+  /** The app updates itself from the project's releases. False in store builds (the store updates them) and in the
+   *  browser; then nothing ever contacts the release server. */
+  updates: boolean;
   openFiles(accept: string, multiple: boolean, capture?: boolean): Promise<OpenedFile[]>;
   /** Saves bytes; returns a description of where it went, or null if cancelled. */
   saveFile(name: string, bytes: Uint8Array, mime: string, path?: string, saveAs?: boolean): Promise<{ path?: string; label: string } | null>;
@@ -20,6 +23,8 @@ export interface Platform {
   installUpdate(url: string, name: string): Promise<void>;
   notify(title: string, body: string): void;
   confirmClose?(hasUnsaved: () => boolean): void;
+  /** Android's Back: `handle` closes whatever is on top and says whether it did; otherwise the app steps aside. */
+  onBack?(handle: () => boolean): void;
   /** Reads text aloud with the system voice; `done` is called when it finishes or is stopped. */
   speak(text: string, done: () => void): Promise<void>;
   stopSpeaking(): void;
@@ -49,6 +54,8 @@ const webSpeech = {
 
 interface DesktopBridge {
   version: string;
+  /** Installed from the Microsoft Store (which then updates it). */
+  store?: boolean;
   openDialog(accept: string, multiple: boolean): Promise<{ name: string; path: string; data: ArrayBuffer }[]>;
   readFile(path: string): Promise<{ name: string; path: string; data: ArrayBuffer } | null>;
   save(name: string, data: ArrayBuffer, path?: string, saveAs?: boolean): Promise<string | null>;
@@ -105,7 +112,7 @@ function notify(title: string, body: string) {
 
 function desktop(b: DesktopBridge): Platform {
   return {
-    kind: 'windows', mobile: false, version: b.version || APP_VERSION, ...webSpeech,
+    kind: 'windows', mobile: false, version: b.version || APP_VERSION, updates: !b.store, ...webSpeech,
     async openFiles(accept, multiple) {
       return (await b.openDialog(accept, multiple)).map((f) => ({ name: f.name, path: f.path, bytes: new Uint8Array(f.data) }));
     },
@@ -136,7 +143,11 @@ async function capacitor(kind: 'android' | 'ios'): Promise<Platform> {
     pick(o: { accept: string; multiple: boolean }): Promise<{ files: { name: string; path: string }[] }>;
     showFolder(): Promise<void>;
   }>('OpenFile');
-  const Updater = registerPlugin<{ install(o: { url: string }): Promise<void>; notify(o: { title: string; body: string }): Promise<void> }>('Updater');
+  const Updater = registerPlugin<{
+    install(o: { url: string }): Promise<void>; notify(o: { title: string; body: string }): Promise<void>; info(): Promise<{ store: boolean }>;
+  }>('Updater');
+  // A store build says so; if the shell can't say, assume it is one (never offer an update the store forbids).
+  const store = (await Updater.info().catch(() => ({ store: true }))).store;
   const Translate = registerPlugin<{ available(): Promise<{ available: boolean }>; translate(o: { paragraphs: string[]; target: string }): Promise<{ paragraphs: string[] }> }>('Translate');
   const canTranslate = kind === 'ios' && (await Translate.available().catch(() => ({ available: false }))).available;
   // Android's web view has no speech synthesis; its system text-to-speech engine reads instead.
@@ -168,7 +179,7 @@ async function capacitor(kind: 'android' | 'ios'): Promise<Platform> {
   const place = kind === 'ios' ? 'On My iPhone › MK PDF (Files app)' : 'Documents/MK PDF';
   const folder = kind === 'ios' ? '' : 'MK PDF';
   return {
-    kind, mobile: true, version: APP_VERSION,
+    kind, mobile: true, version: APP_VERSION, updates: !store,
     async openFiles(accept, multiple, capture) {
       // iPhone documents come from the system's document picker; photos and the camera keep the web view's
       // own chooser, which offers the photo library.
@@ -193,20 +204,20 @@ async function capacitor(kind: 'android' | 'ios'): Promise<Platform> {
     openExternal: (url) => { window.open(url, '_system'); },
     // Android: downloads the APK and opens the system installer, which updates this app in place. iPhone apps
     // can't install themselves; the release page has the new build to sign and install.
-    async installUpdate(url) { if (kind === 'android') await Updater.install({ url }); else window.open(url, '_system'); },
+    async installUpdate(url) { if (store) return; if (kind === 'android') await Updater.install({ url }); else window.open(url, '_system'); },
     notify: (title, body) => { void Updater.notify({ title, body }).catch(() => {}); },
     ...(canTranslate ? { translate: async (paragraphs: string[], target: string) => (await Translate.translate({ paragraphs, target })).paragraphs } : {}),
     ...(kind === 'android' ? {
       async speak(text: string, done: () => void) { try { await Speech.speak({ text }); } finally { done(); } },
       stopSpeaking() { void Speech.stop(); },
     } : webSpeech),
-    confirmClose() { App.addListener('backButton', ({ canGoBack }) => { if (!canGoBack) App.minimizeApp(); else history.back(); }); },
+    onBack(handle) { void App.addListener('backButton', () => { if (!handle()) void App.minimizeApp(); }); },
   };
 }
 
 function web(): Platform {
   return {
-    kind: 'web', mobile: false, version: APP_VERSION, ...webSpeech,
+    kind: 'web', mobile: false, version: APP_VERSION, updates: false, ...webSpeech,
     openFiles: (accept, multiple, capture) => pickFiles(accept, multiple, capture),
     async saveFile(name, bytes, mime) { download(name, bytes, mime); return { label: 'Downloads' }; },
     async saveMany(files, mime) { files.forEach((f) => download(f.name, f.bytes, mime)); return 'Downloads'; },

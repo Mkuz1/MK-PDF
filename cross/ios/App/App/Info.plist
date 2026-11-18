@@ -72,6 +72,10 @@
 	<string>MK PDF opens photos to add them to PDFs.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>MK PDF saves exported page images to your photos.</string>
+	<!-- YES for the App Store (it updates the app); the build on the project's release page passes NO and checks for
+	     new versions itself. -->
+	<key>MKPDFStoreBuild</key>
+	<string>$(MKPDF_STORE_BUILD)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>UIRequiredDeviceCapabilities</key>

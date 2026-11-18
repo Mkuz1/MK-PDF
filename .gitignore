@@ -16,3 +16,6 @@ cross/public/tesseract/
 cross/e2e/.data/
 cross/e2e/.out/
 cross/test-results/
+build-appstore/
+.build-appstore/
+cross/public/licenses.txt
