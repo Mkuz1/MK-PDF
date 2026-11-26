@@ -1,0 +1,36 @@
+feature,area,priority,original,clone,notes
+Retype existing text in place,editing,must,yes,yes,both codebases
+Edited text keeps the document's embedded font,editing,must,yes (colour/size only),yes,all platforms: written with the page's own font when it has the letters
+Fallback font when original missing,editing,must,yes (user-chosen),yes,Noto by style; no user choice
+Font family dropdown,editing,should,yes,yes,shared app: original plus common families
+Size / colour / bold / italic,editing,must,yes,yes,
+Underline,editing,could,yes,yes,shared app
+Superscript / subscript,editing,could,yes,yes,"shared app: selected digits, signs and small letters as Unicode super/subscript (searchable)"
+Alignment incl. justify,editing,should,yes,yes,shared app: justify spreads all but the last line
+Line spacing / paragraph spacing,editing,should,yes,yes,line spacing ×1 to ×2 and a gap after paragraphs
+Character spacing / horizontal scaling,editing,could,yes,yes,"shared app: letter spacing up to +6% (wider breaks search in readers), width 80–120%"
+Resize text box and reflow,editing,should,yes,yes,shared app; width handle
+Rotate text box,editing,could,yes,no,"not added: the engine edits only upright text, so a rotated box would stop being editable"
+Shift-drag moves in a straight line,editing,could,yes,yes,shared app
+Bulleted / numbered lists,editing,could,yes,yes,"shared app: bullet or number per paragraph, hanging indent"
+Find and replace across the document,editing,must,yes,yes,"Mac and shared app; match case, whole words, one undo"
+Spell check of edited text,editing,could,yes,yes,"Windows (system checker, right-click suggestions), Mac, phones (keyboard)"
+OCR searchable layer,scans,must,yes,yes,
+Edit scans in place (auto OCR),scans,must,yes,yes,Make This Page Editable
+New text on scans matches the scan's typeface,scans,should,yes,partial,size and ink colour matched; typeface always sans
+Review uncertain OCR words,scans,should,yes,yes,"shared app; picture, alternatives, Accept all"
+Deskew before OCR,scans,should,yes,yes,shared app; on by default before recognition
+Background removal / whitening,scans,should,yes,yes,shared app; with deskew
+Descreen / sharpen,scans,could,yes,no,not added: needs real halftone or soft scans to tune; little effect on reading text
+JBIG2 / JPEG2000 compression,scans,skip,yes,no,no small open encoder for the browser build
+PDF/A on scan,scans,could,yes,partial,PDF/X exists
+Word export,export,must,yes,yes,
+Word export: flowing text vs exact layout,export,should,yes,yes,"all platforms, Mac Export panel included"
+Word export: comments on/off,export,could,yes,yes,"all platforms: Word comments on the nearest paragraph, replies folded in"
+Word export: images on/off,export,could,yes,yes,all platforms: Include pictures
+Export a selection as Word / Excel / CSV,export,should,yes,yes,shared app: Export › Selected area
+Export all images (skip small),export,could,yes,yes,shared app: skip pictures under 32/100/300 px
+Phone reflow reading view,phone,should,yes,yes,shared app; Reading view
+Outline from detected headings,phone,could,yes,yes,Reading view contents
+Text size and spacing in reading view,phone,should,yes,yes,remembered
+AI chat editing,editing,skip,yes,no,cloud model; MK PDF's AI is on-device and Mac only
