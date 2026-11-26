@@ -1,0 +1,966 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MK PDF: edit the real text in any PDF, on Mac, Windows, Android and iPhone</title>
+<meta name="description" content="MK PDF lets you click any paragraph in a PDF and retype it with the same font, size and spacing. Sign, organize, redact, convert to Word or Excel and make scans editable. Free for Mac, Windows, Android and iPhone. No account, nothing uploaded.">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="canonical" href="https://mkpdf.pages.dev/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="MK PDF: edit the real text in any PDF">
+<meta property="og:description" content="Click a paragraph, retype it, keep the font. Sign, organize, redact and convert PDFs on Mac, Windows, Android and iPhone.">
+<meta property="og:image" content="https://mkpdf.pages.dev/og.png">
+<meta property="og:url" content="https://mkpdf.pages.dev/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MK PDF: edit the real text in any PDF">
+<meta name="twitter:description" content="Click a paragraph, retype it, keep the font. Free for Mac, Windows, Android and iPhone.">
+<meta name="twitter:image" content="https://mkpdf.pages.dev/og.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@500&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "MK PDF",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "macOS, Windows, Android, iOS",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "downloadUrl": "https://github.com/Mkuz1/MK-PDF/releases/latest"
+}
+</script>
+<style>
+/* =========================================================
+   Layer 1: Core Colors (raw palettes)
+   ========================================================= */
+:root{
+  --grayscale-00:#FFFFFF; --grayscale-50:#F7F7F7; --grayscale-100:#EFEFEF; --grayscale-150:#E4E4E4;
+  --grayscale-200:#D4D4D4; --grayscale-250:#C4C4C4; --grayscale-300:#B0B0B0; --grayscale-400:#9B9B9B;
+  --grayscale-450:#8A8A8A; --grayscale-500:#737373; --grayscale-600:#5C5C5C; --grayscale-700:#3F3F3F;
+  --grayscale-750:#313131; --grayscale-800:#272727; --grayscale-850:#1F1F1F; --grayscale-870:#181818;
+  --grayscale-900:#121212; --grayscale-1000:#000000;
+  --primary-100:#FBE3EA; --primary-150:#F8D0DC; --primary-200:#F5BFCE; --primary-400:#EA6D8E;
+  --primary-500:#E2456F; --primary-600:#C42D57; --primary-700:#A02347;
+  --green-400:#4CC38A; --green-600:#1F8A55;
+  --red-100:#FCE8E8; --red-400:#F08A8A; --red-700:#8E2A2A; --red-800:#6B1F1F;
+  --grayscale-alpha-1000-92:rgba(0,0,0,.92); --grayscale-alpha-1000-25:rgba(0,0,0,.25);
+  --grayscale-alpha-870-72:rgba(24,24,24,.72); --grayscale-alpha-800-86:rgba(39,39,39,.86);
+  --grayscale-alpha-00-72:rgba(255,255,255,.72); --grayscale-alpha-00-92:rgba(255,255,255,.92);
+  --grayscale-alpha-00-30:rgba(255,255,255,.3);
+}
+
+/* =========================================================
+   Layer 2: Color System (Dark is the default mode)
+   ========================================================= */
+:root{
+  --surface-page:var(--grayscale-1000);
+  --surface-primary:var(--grayscale-870);
+  --surface-primary-subtle:var(--grayscale-850);
+  --surface-secondary:var(--grayscale-800);
+  --surface-skeleton:var(--grayscale-750);
+  --surface-error-subtle:var(--grayscale-850);
+  --border-primary:var(--grayscale-750);
+  --border-primary-light:var(--grayscale-700);
+  --border-error:var(--red-400);
+  --action-primary:var(--grayscale-00);
+  --action-primary-hover:var(--grayscale-150);
+  --action-secondary:var(--grayscale-850);
+  --action-secondary-hover:var(--grayscale-800);
+  --text-primary:var(--grayscale-50);
+  --text-secondary:var(--grayscale-400);
+  --text-tertiary:var(--grayscale-450);
+  --text-inverted:var(--grayscale-850);
+  --text-accent:var(--primary-400);
+  --text-error:var(--red-400);
+  --text-muted-reveal:var(--grayscale-alpha-00-30);
+  --icon-accent:var(--primary-500);
+  --icon-success:var(--green-400);
+  --overlay-nav:var(--grayscale-alpha-870-72);
+  --overlay-menu:var(--grayscale-alpha-1000-92);
+  --overlay-chip:var(--grayscale-alpha-800-86);
+  --mock-thumb:var(--grayscale-750);
+  --mock-thumb-line:var(--grayscale-600);
+  --hero-from:#FFFFFF; --hero-to:#9B9B9B;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --surface-page:var(--grayscale-00);
+    --surface-primary:var(--grayscale-50);
+    --surface-primary-subtle:var(--grayscale-100);
+    --surface-secondary:var(--grayscale-150);
+    --surface-skeleton:var(--grayscale-200);
+    --surface-error-subtle:var(--red-100);
+    --border-primary:var(--grayscale-150);
+    --border-primary-light:var(--grayscale-250);
+    --border-error:var(--red-700);
+    --action-primary:var(--grayscale-1000);
+    --action-primary-hover:var(--grayscale-750);
+    --action-secondary:var(--grayscale-00);
+    --action-secondary-hover:var(--grayscale-100);
+    --text-primary:var(--grayscale-870);
+    --text-secondary:var(--grayscale-600);
+    --text-tertiary:var(--grayscale-600);
+    --text-inverted:var(--grayscale-00);
+    --text-accent:var(--primary-600);
+    --text-error:var(--red-700);
+    --text-muted-reveal:var(--grayscale-alpha-1000-25);
+    --icon-accent:var(--primary-600);
+    --icon-success:var(--green-600);
+    --overlay-nav:var(--grayscale-alpha-00-72);
+    --overlay-menu:var(--grayscale-alpha-00-92);
+    --overlay-chip:var(--grayscale-alpha-00-92);
+    --mock-thumb:var(--grayscale-200);
+    --mock-thumb-line:var(--grayscale-300);
+    --hero-from:#000000; --hero-to:#666666;
+    color-scheme:light;
+  }
+}
+
+/* =========================================================
+   spacing, radius, motion, type
+   ========================================================= */
+:root{
+  --spacing-25:2px; --spacing-50:4px; --spacing-75:8px; --spacing-100:12px; --spacing-200:16px;
+  --spacing-300:24px; --spacing-400:32px; --spacing-500:40px; --spacing-600:48px; --spacing-700:64px;
+  --spacing-800:80px; --spacing-900:96px;
+  --radius-6:6px; --radius-8:8px; --radius-12:12px; --radius-16:16px; --radius-24:24px; --radius-full:9999px;
+  --ease:cubic-bezier(0.22,1,0.36,1);
+  --font:'Geist',system-ui,sans-serif; --mono:'Geist Mono',ui-monospace,monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:var(--spacing-900)}
+body{margin:0;background:var(--surface-page);color:var(--text-primary);font-family:var(--font);font-size:16px;line-height:24px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4,p{margin:0;text-wrap:pretty}
+h1,h2,h3,h4{text-wrap:balance}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none;margin:0;padding:0}
+svg.i{width:1em;height:1em;flex:none;fill:currentColor}
+img{max-width:100%;display:block}
+
+/* Text styles */
+.heading-1{font-size:60px;line-height:60px;font-weight:400}
+.heading-2{font-size:48px;line-height:48px;font-weight:400}
+.heading-4{font-size:30px;line-height:36px;font-weight:400}
+.heading-5{font-size:24px;line-height:32px;font-weight:400}
+.heading-6{font-size:20px;line-height:28px;font-weight:400}
+.title-1{font-size:20px;line-height:28px;font-weight:500}
+.title-2{font-size:18px;line-height:28px;font-weight:500}
+.title-3{font-size:16px;line-height:24px;font-weight:500}
+.title-4{font-size:14px;line-height:20px;font-weight:500}
+.body-3{font-size:16px;line-height:24px;font-weight:400}
+.body-6{font-size:14px;line-height:20px;font-weight:400}
+.button-lg{font-size:18px;line-height:28px;font-weight:600}
+.button-md{font-size:16px;line-height:24px;font-weight:600}
+.button-sm{font-size:14px;line-height:20px;font-weight:600}
+.caption-1{font-size:14px;line-height:20px;font-weight:500}
+.caption-2{font-size:14px;line-height:20px;font-weight:400}
+.caption-3{font-size:12px;line-height:16px;font-weight:600}
+.caption-4{font-size:12px;line-height:16px;font-weight:500}
+.caption-5{font-size:12px;line-height:16px;font-weight:400}
+.mono{font-family:var(--mono)}
+.secondary{color:var(--text-secondary)}
+.hero-gradient{background:linear-gradient(90deg,var(--hero-from),var(--hero-to));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* Layout */
+.wrap{width:100%;max-width:1248px;margin:0 auto;padding:0 var(--spacing-200)}
+@media (min-width:768px){.wrap{padding:0 var(--spacing-400)}}
+section{padding:var(--spacing-900) 0}
+@media (max-width:640px){section{padding:var(--spacing-700) 0}}
+.divider{height:1px;background:var(--border-primary)}
+.head{display:grid;grid-template-columns:1fr 1fr;gap:var(--spacing-300) var(--spacing-700);align-items:end;margin-bottom:var(--spacing-700)}
+.head p{color:var(--text-secondary);max-width:520px}
+@media (max-width:900px){.head{grid-template-columns:1fr;margin-bottom:var(--spacing-600)}}
+@media (max-width:640px){.head .heading-2{font-size:36px;line-height:40px}}
+
+/* Skip link */
+.skip{position:absolute;left:var(--spacing-200);top:var(--spacing-200);z-index:100;background:var(--action-primary);color:var(--text-inverted);padding:var(--spacing-75) var(--spacing-100);border-radius:var(--radius-8);transform:translateY(-200%);transition:transform .3s var(--ease)}
+.skip:focus{transform:none}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--spacing-75);padding:var(--spacing-75) var(--spacing-100);border-radius:var(--radius-12);border:1px solid transparent;cursor:pointer;white-space:nowrap;
+  transition:transform .5s var(--ease),background-color .3s var(--ease),border-color .3s var(--ease)}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:scale(0.98)}
+.btn:focus-visible,a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var(--icon-accent);outline-offset:3px}
+.btn-primary{background:var(--action-primary);color:var(--text-inverted)}
+.btn-primary:hover{background:var(--action-primary-hover)}
+.btn-secondary{background:var(--action-secondary);border-color:var(--border-primary);color:var(--text-primary)}
+.btn-secondary:hover{background:var(--action-secondary-hover)}
+.btn-large{padding:var(--spacing-100) var(--spacing-300)}
+.link{display:inline-flex;align-items:center;gap:var(--spacing-50);color:var(--text-secondary);transition:color .3s var(--ease)}
+.link:hover{color:var(--text-primary)}
+.link svg{transition:transform .5s var(--ease)}
+.link:hover svg{transform:translateX(2px)}
+@media (max-width:640px){.btn{min-height:44px}}
+
+/* Nav */
+.nav{position:fixed;top:var(--spacing-200);left:50%;transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:var(--spacing-50);padding:var(--spacing-50);
+  background:var(--overlay-nav);backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);border:1px solid var(--border-primary);border-radius:var(--radius-full);max-width:calc(100% - 32px)}
+.nav-brand{display:flex;align-items:center;gap:var(--spacing-75);padding:var(--spacing-50) var(--spacing-100) var(--spacing-50) var(--spacing-50)}
+.nav-brand img{width:32px;height:32px;border-radius:var(--radius-8)}
+.nav-links{display:flex;gap:var(--spacing-25)}
+.nav-links a{padding:var(--spacing-75) var(--spacing-100);border-radius:var(--radius-full);color:var(--text-secondary);transition:color .3s var(--ease),background-color .3s var(--ease)}
+.nav-links a:hover,.nav-links a[aria-current="true"]{color:var(--text-primary);background:var(--surface-secondary)}
+.nav .btn{border-radius:var(--radius-full)}
+.menu-toggle{display:none;width:44px;height:44px;border-radius:var(--radius-full);border:0;background:transparent;color:var(--text-primary);cursor:pointer;position:relative}
+.menu-toggle span{position:absolute;left:14px;width:16px;height:2px;border-radius:2px;background:currentColor;transition:transform .5s var(--ease)}
+.menu-toggle span:nth-child(1){top:17px}
+.menu-toggle span:nth-child(2){top:25px}
+.menu-open .menu-toggle span:nth-child(1){transform:translateY(4px) rotate(45deg)}
+.menu-open .menu-toggle span:nth-child(2){transform:translateY(-4px) rotate(-45deg)}
+@media (max-width:820px){
+  .nav{left:var(--spacing-200);right:var(--spacing-200);transform:none;max-width:none;justify-content:space-between}
+  .nav-links{display:none}
+  .menu-toggle{display:block}
+}
+.mobile-menu{position:fixed;inset:0;z-index:40;background:var(--overlay-menu);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  padding:calc(var(--spacing-900) + var(--spacing-400)) var(--spacing-300) var(--spacing-400);display:flex;flex-direction:column;gap:var(--spacing-75);
+  opacity:0;pointer-events:none;transition:opacity .5s var(--ease)}
+.menu-open .mobile-menu{opacity:1;pointer-events:auto}
+.mobile-menu a{opacity:0;transform:translateY(24px);transition:opacity .5s var(--ease),transform .5s var(--ease);padding:var(--spacing-75) 0;border-radius:var(--radius-8)}
+.menu-open .mobile-menu a{opacity:1;transform:none}
+
+/* Hero */
+.hero{padding:calc(var(--spacing-900) + var(--spacing-800)) 0 var(--spacing-800);text-align:center}
+.hero h1{max-width:680px;margin:0 auto}
+.hero .sub{max-width:680px;margin:var(--spacing-300) auto 0;color:var(--text-secondary)}
+.hero-cta{margin-top:var(--spacing-500);display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:var(--spacing-300)}
+.meta{margin-top:var(--spacing-300);display:flex;flex-wrap:wrap;justify-content:center;gap:var(--spacing-75) var(--spacing-300);color:var(--text-secondary)}
+.meta span{display:inline-flex;align-items:center;gap:var(--spacing-75)}
+.meta svg{color:var(--icon-success)}
+@media (max-width:640px){
+  .hero{padding-top:calc(var(--spacing-900) + var(--spacing-400))}
+  .hero h1{font-size:36px;line-height:40px}
+  .hero .sub{font-size:16px;line-height:24px}
+  .hero-cta{flex-direction:column;gap:var(--spacing-200)}
+}
+.br-d{display:none}
+@media (min-width:641px){.br-d{display:inline}}
+
+/* Product mockup */
+.stage{position:relative;margin:var(--spacing-700) auto 0;max-width:1040px}
+.window{background:var(--surface-primary);border:1px solid var(--border-primary);border-radius:var(--radius-24);padding:var(--spacing-75);text-align:left}
+.win-bar{display:flex;align-items:center;gap:var(--spacing-100);padding:var(--spacing-75) var(--spacing-100) var(--spacing-100)}
+.dots{display:flex;gap:var(--spacing-75)}
+.dots i{width:12px;height:12px;border-radius:var(--radius-full);background:var(--surface-secondary);display:block}
+.tabs{display:flex;gap:var(--spacing-50);overflow:hidden}
+.tab{padding:var(--spacing-50) var(--spacing-100);border-radius:var(--radius-8);color:var(--text-secondary);white-space:nowrap;display:flex;align-items:center;gap:var(--spacing-75)}
+.tab.on{background:var(--surface-secondary);color:var(--text-primary)}
+.toolbar{display:flex;gap:var(--spacing-50);padding:0 var(--spacing-75) var(--spacing-75);overflow:hidden}
+.tool{padding:var(--spacing-50) var(--spacing-100);border-radius:var(--radius-full);color:var(--text-secondary);white-space:nowrap;border:1px solid transparent}
+.tool.on{color:var(--text-primary);border-color:var(--border-primary);background:var(--surface-primary-subtle)}
+.win-body{display:grid;grid-template-columns:136px 1fr 232px;gap:var(--spacing-75);background:var(--surface-primary-subtle);border-radius:var(--radius-16);padding:var(--spacing-200);min-height:420px}
+.thumbs{display:grid;gap:var(--spacing-200);align-content:start}
+.thumb{aspect-ratio:3/4;border-radius:var(--radius-6);background:var(--mock-thumb);border:2px solid transparent;padding:var(--spacing-100) var(--spacing-75);display:grid;gap:var(--spacing-50);align-content:start}
+.thumb.on{border-color:var(--icon-accent)}
+.thumb i{display:block;height:4px;border-radius:2px;background:var(--mock-thumb-line)}
+.paper{background:#FBFAF7;color:#1A1A1A;border-radius:var(--radius-8);padding:var(--spacing-500);font-family:Georgia,'Times New Roman',serif;position:relative;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.06)}
+.paper .p-title{font-size:24px;line-height:32px;font-weight:600;margin-bottom:var(--spacing-200)}
+.paper .p-line{display:block;height:8px;border-radius:4px;background:#E3E0D9;margin:var(--spacing-100) 0}
+.paper .p-text{font-size:16px;line-height:24px;margin:var(--spacing-200) 0}
+.edit-box{position:relative;display:inline-block;white-space:nowrap;margin:0 var(--spacing-50);outline:1.5px dashed var(--primary-500);outline-offset:4px;border-radius:2px;background:rgba(226,69,111,.07)}
+.caret{display:inline-block;width:2px;height:20px;background:var(--primary-500);vertical-align:-4px;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.sig{margin-top:var(--spacing-400);display:flex;justify-content:space-between;align-items:flex-end;gap:var(--spacing-200)}
+.sig-line{border-top:1px solid #BDB8AE;padding-top:var(--spacing-50);font-family:var(--font);font-size:12px;line-height:16px;color:#6F6A61;min-width:128px}
+.sig svg{width:144px;height:48px;color:#2A2AA8}
+.redact{display:inline-block;width:88px;height:14px;background:#111;vertical-align:-2px;border-radius:1px}
+.demo .redact{box-shadow:0 0 0 1px var(--border-primary-light)}
+.inspector{background:var(--surface-primary);border:1px solid var(--border-primary);border-radius:var(--radius-12);padding:var(--spacing-200);display:grid;gap:var(--spacing-200);align-content:start}
+.field{display:grid;gap:var(--spacing-75)}
+.field .val{display:flex;justify-content:space-between;align-items:center;padding:var(--spacing-75) var(--spacing-100);background:var(--surface-primary-subtle);border:1px solid var(--border-primary);border-radius:var(--radius-6)}
+.swatches{display:flex;gap:var(--spacing-75)}
+.swatches i{width:20px;height:20px;border-radius:var(--radius-full);display:block;border:2px solid var(--surface-primary)}
+.swatches i.on{box-shadow:0 0 0 2px var(--icon-accent)}
+.match{display:flex;gap:var(--spacing-75);align-items:center;color:var(--icon-success)}
+.float{position:absolute;display:flex;align-items:center;gap:var(--spacing-75);padding:var(--spacing-75) var(--spacing-100);border-radius:var(--radius-12);background:var(--overlay-chip);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--border-primary);white-space:nowrap;color:var(--text-primary)}
+.float svg{color:var(--icon-accent)}
+.f1{left:-24px;top:34%}
+.f2{right:-24px;bottom:18%}
+@media (max-width:1100px){.f1{left:var(--spacing-75)} .f2{right:var(--spacing-75)}}
+@media (max-width:900px){
+  .win-body{grid-template-columns:1fr}
+  .thumbs,.inspector{display:none}
+  .paper{padding:var(--spacing-300)}
+}
+@media (max-width:640px){
+  .float{display:none}
+  .tabs .tab:not(.on){display:none}
+  .win-body{padding:var(--spacing-75);min-height:0}
+  .paper .p-title{font-size:20px;line-height:28px}
+}
+
+/* Platform strip */
+.platform-strip{margin-top:var(--spacing-700);display:grid;gap:var(--spacing-300);justify-items:center}
+.platform-strip ul{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--spacing-300) var(--spacing-600);color:var(--text-secondary)}
+.platform-strip li{display:flex;align-items:center;gap:var(--spacing-75)}
+.platform-strip svg{font-size:24px;color:var(--text-primary)}
+
+/* Tagline reveal */
+.tagline{padding:var(--spacing-900) 0}
+.tagline p{max-width:880px;margin:0 auto;text-align:center}
+.tagline .w{color:var(--text-muted-reveal);transition:color .6s var(--ease)}
+.tagline .w.on{color:var(--text-primary)}
+.tagline .w.hl.on{color:var(--text-accent)}
+@media (max-width:640px){.tagline p{font-size:30px;line-height:36px}}
+
+/* Bento */
+.bento{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:var(--spacing-200)}
+.card{background:var(--surface-primary);border:1px solid var(--border-primary);border-radius:var(--radius-24);padding:var(--spacing-400);display:flex;flex-direction:column;gap:var(--spacing-200);overflow:hidden;transition:border-color .3s var(--ease)}
+.card:hover{border-color:var(--border-primary-light)}
+.card .ic{width:40px;height:40px;border-radius:var(--radius-12);background:var(--surface-secondary);display:grid;place-items:center;font-size:20px;color:var(--icon-accent)}
+.card p{color:var(--text-secondary)}
+.c-2{grid-column:span 2}.c-3{grid-column:span 3}.c-4{grid-column:span 4}
+@media (max-width:900px){.c-2,.c-3,.c-4{grid-column:span 6}}
+.demo{margin-top:auto;background:var(--surface-primary-subtle);border:1px solid var(--border-primary);border-radius:var(--radius-12);padding:var(--spacing-200)}
+.before-after{display:grid;gap:var(--spacing-100)}
+.ba-row{display:flex;align-items:baseline;gap:var(--spacing-100)}
+.ba-row .k{width:56px;flex:none;color:var(--text-tertiary)}
+.ba-row .k.after{color:var(--text-accent)}
+.strike{color:var(--text-tertiary);text-decoration:line-through;text-decoration-color:var(--icon-accent)}
+.formats{display:flex;flex-wrap:wrap;gap:var(--spacing-75)}
+.chip{padding:var(--spacing-50) var(--spacing-100);border-radius:var(--radius-full);background:var(--surface-primary);border:1px solid var(--border-primary);color:var(--text-secondary)}
+.check-list{display:grid;gap:var(--spacing-100)}
+.check-list li{display:flex;gap:var(--spacing-100);align-items:center}
+.check-list svg{color:var(--icon-success)}
+.platforms{display:flex;gap:var(--spacing-100);font-size:24px}
+.platforms span{width:48px;height:48px;border-radius:var(--radius-12);background:var(--surface-secondary);display:grid;place-items:center}
+.scanline{position:relative;padding:var(--spacing-100);border-radius:var(--radius-6);background:#ECE8DF;color:#3A3A3A;font-family:Georgia,serif;overflow:hidden}
+.scanline .bar{position:absolute;left:0;right:0;top:0;height:2px;background:var(--primary-500);animation:scan 3s var(--ease) infinite alternate}
+@keyframes scan{from{transform:translateY(0)}to{transform:translateY(46px)}}
+.update-row{display:flex;justify-content:space-between;align-items:center;gap:var(--spacing-100)}
+
+/* Toolkit: one bordered panel, cells split by 1px dividers */
+.kit{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--border-primary);border:1px solid var(--border-primary);border-radius:var(--radius-24);overflow:hidden}
+@media (max-width:1000px){.kit{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){.kit{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:440px){.kit{grid-template-columns:1fr}}
+.kit-cell{background:var(--surface-page);padding:var(--spacing-300);display:grid;gap:var(--spacing-75);align-content:start;transition:background-color .3s var(--ease)}
+.kit-cell:hover{background:var(--surface-primary)}
+.kit-cell .row{display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-75);margin-bottom:var(--spacing-75)}
+.kit-cell .row svg{font-size:24px;color:var(--icon-accent)}
+.kit-cell p{color:var(--text-secondary)}
+.badge{padding:var(--spacing-25) var(--spacing-75);border-radius:var(--radius-full);border:1px solid var(--border-primary);color:var(--text-secondary)}
+
+/* How it works: two columns */
+.how{display:grid;grid-template-columns:5fr 7fr;gap:var(--spacing-700);align-items:start}
+@media (max-width:900px){.how{grid-template-columns:1fr;gap:var(--spacing-500)}}
+.how-intro{position:sticky;top:calc(var(--spacing-900) + var(--spacing-200));display:grid;gap:var(--spacing-300);justify-items:start}
+.how-intro p{color:var(--text-secondary)}
+@media (max-width:900px){.how-intro{position:static}}
+@media (max-width:640px){.how-intro .heading-2{font-size:36px;line-height:40px}}
+.step{display:grid;grid-template-columns:48px 1fr;gap:var(--spacing-300);padding:var(--spacing-400) 0}
+.step:first-child{padding-top:0}
+.step .num{width:48px;height:48px;border-radius:var(--radius-full);border:1px solid var(--border-primary);display:grid;place-items:center;font-family:var(--mono);color:var(--text-accent)}
+.step h3{margin-bottom:var(--spacing-75)}
+.step p{color:var(--text-secondary)}
+
+/* Downloads */
+.dl-meta{display:flex;flex-wrap:wrap;gap:var(--spacing-75) var(--spacing-300);color:var(--text-secondary)}
+.dl-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--spacing-200)}
+@media (max-width:1000px){.dl-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.dl-grid{grid-template-columns:1fr}}
+.dl{background:var(--surface-primary);border:1px solid var(--border-primary);border-radius:var(--radius-24);padding:var(--spacing-300);display:flex;flex-direction:column;gap:var(--spacing-200);transition:border-color .3s var(--ease)}
+.dl:hover{border-color:var(--border-primary-light)}
+.dl.mine{border-color:var(--icon-accent)}
+.dl .os{font-size:28px;width:48px;height:48px;border-radius:var(--radius-12);background:var(--surface-secondary);display:grid;place-items:center}
+.dl-title{display:flex;align-items:center;gap:var(--spacing-75);flex-wrap:wrap}
+.you{color:var(--text-accent);display:inline-flex;align-items:center;gap:var(--spacing-50)}
+.you[hidden]{display:none}
+.dl .note{color:var(--text-secondary);margin-top:var(--spacing-75)}
+.dl .actions{margin-top:auto;display:grid;gap:var(--spacing-75)}
+.dl .btn{width:100%;justify-content:space-between}
+.dl .btn>span:first-child{display:inline-flex;align-items:center;gap:var(--spacing-75)}
+.size{font-family:var(--mono);opacity:.72}
+.skel{display:inline-block;width:48px;height:12px;border-radius:var(--radius-6);background:var(--surface-skeleton);animation:pulse 1.2s var(--ease) infinite alternate;vertical-align:middle}
+.skel.wide{width:96px}
+@keyframes pulse{from{opacity:.35}to{opacity:1}}
+.alert{display:none;margin-bottom:var(--spacing-400);padding:var(--spacing-200);border-radius:var(--radius-12);border:1px solid var(--border-error);background:var(--surface-error-subtle);color:var(--text-error);gap:var(--spacing-100);align-items:flex-start}
+.alert.show{display:flex}
+.alert svg{font-size:20px;flex:none;margin-top:2px}
+.alert a{text-decoration:underline}
+
+/* FAQ: two columns, rows split by dividers */
+.faq-layout{display:grid;grid-template-columns:5fr 7fr;gap:var(--spacing-700);align-items:start}
+@media (max-width:900px){.faq-layout{grid-template-columns:1fr;gap:var(--spacing-500)}}
+.faq-intro{display:grid;gap:var(--spacing-300);justify-items:start}
+.faq-intro p{color:var(--text-secondary)}
+@media (max-width:640px){.faq-intro .heading-2{font-size:36px;line-height:40px}}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:var(--spacing-200);padding:var(--spacing-300) 0;border-radius:var(--radius-8)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary svg{font-size:20px;color:var(--text-secondary);transition:transform .5s var(--ease)}
+.faq details[open] summary svg{transform:rotate(45deg)}
+.faq .a{padding:0 var(--spacing-700) var(--spacing-300) 0;color:var(--text-secondary)}
+@media (max-width:640px){.faq .a{padding-right:0}}
+
+/* Final CTA */
+.final .box{background:var(--surface-primary);border:1px solid var(--border-primary);border-radius:var(--radius-24);padding:var(--spacing-900) var(--spacing-300);display:grid;justify-items:center;gap:var(--spacing-300);text-align:center}
+.final img{width:80px;height:80px;border-radius:var(--radius-24)}
+.final p{color:var(--text-secondary);max-width:560px}
+@media (max-width:640px){.final .box{padding:var(--spacing-700) var(--spacing-200)} .final .heading-2{font-size:36px;line-height:40px}}
+
+/* Footer */
+footer{padding:var(--spacing-800) 0 var(--spacing-500);color:var(--text-secondary)}
+.foot-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:var(--spacing-500)}
+@media (max-width:760px){.foot-top{grid-template-columns:1fr 1fr}}
+.foot-brand{display:grid;gap:var(--spacing-200);align-content:start;max-width:320px}
+.foot-brand .name{display:flex;align-items:center;gap:var(--spacing-75);color:var(--text-primary)}
+.foot-brand img{width:28px;height:28px;border-radius:var(--radius-6)}
+@media (max-width:760px){.foot-brand{grid-column:1 / -1}}
+.foot-col{display:grid;gap:var(--spacing-100);align-content:start}
+.foot-col h4{color:var(--text-primary);margin-bottom:var(--spacing-50)}
+.foot-col a{transition:color .3s var(--ease);width:fit-content}
+.foot-col a:hover{color:var(--text-primary)}
+.foot-bottom{padding-top:var(--spacing-300);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:var(--spacing-100)}
+
+/* Reveals */
+.js .reveal{opacity:0;transform:translateY(32px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.js .reveal.in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important}
+  .js .reveal{transform:none;transition:opacity .4s linear}
+  .btn:hover,.btn:active{transform:none}
+  .mobile-menu a{transform:none}
+  .tagline .w{color:var(--text-primary);transition:none}
+  .tagline .w.hl{color:var(--text-accent)}
+}
+</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><symbol id="i-android-logo" viewBox="0 0 256 256"><path d="M176,148a12,12,0,1,1-12-12A12,12,0,0,1,176,148ZM92,136a12,12,0,1,0,12,12A12,12,0,0,0,92,136Zm148,24v24a16,16,0,0,1-16,16H32a16,16,0,0,1-16-16V161.13A113.38,113.38,0,0,1,51.4,78.72L26.34,53.66A8,8,0,0,1,37.66,42.34L63.82,68.5a111.43,111.43,0,0,1,128.55-.19l26-26a8,8,0,0,1,11.32,11.32L204.82,78.5c.75.71,1.5,1.43,2.24,2.17A111.25,111.25,0,0,1,240,160Zm-16,0a96,96,0,0,0-96-96h-.34C74.91,64.18,32,107.75,32,161.13V184H224Z"/></symbol><symbol id="i-apple-logo" viewBox="0 0 256 256"><path d="M223.3,169.59a8.07,8.07,0,0,0-2.8-3.4C203.53,154.53,200,134.64,200,120c0-17.67,13.47-33.06,21.5-40.67a8,8,0,0,0,0-11.62C208.82,55.74,187.82,48,168,48a72.2,72.2,0,0,0-40,12.13,71.56,71.56,0,0,0-90.71,9.09A74.63,74.63,0,0,0,16,123.4a127.06,127.06,0,0,0,40.14,89.73A39.8,39.8,0,0,0,83.59,224h87.68a39.84,39.84,0,0,0,29.12-12.57,125,125,0,0,0,17.82-24.6C225.23,174,224.33,172,223.3,169.59Zm-34.63,30.94a23.76,23.76,0,0,1-17.4,7.47H83.59a23.82,23.82,0,0,1-16.44-6.51A111.14,111.14,0,0,1,32,123,58.5,58.5,0,0,1,48.65,80.47,54.81,54.81,0,0,1,88,64h.78A55.45,55.45,0,0,1,123,76.28a8,8,0,0,0,10,0A55.44,55.44,0,0,1,168,64a70.64,70.64,0,0,1,36,10.35c-13,14.52-20,30.47-20,45.65,0,23.77,7.64,42.73,22.18,55.3A105.82,105.82,0,0,1,188.67,200.53ZM128.23,30A40,40,0,0,1,167,0h1a8,8,0,0,1,0,16h-1a24,24,0,0,0-23.24,18,8,8,0,1,1-15.5-4Z"/></symbol><symbol id="i-arrow-clockwise" viewBox="0 0 256 256"><path d="M240,56v48a8,8,0,0,1-8,8H184a8,8,0,0,1,0-16H211.4L184.81,71.64l-.25-.24a80,80,0,1,0-1.67,114.78,8,8,0,0,1,11,11.63A95.44,95.44,0,0,1,128,224h-1.32A96,96,0,1,1,195.75,60L224,85.8V56a8,8,0,1,1,16,0Z"/></symbol><symbol id="i-arrow-right" viewBox="0 0 256 256"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></symbol><symbol id="i-arrow-up" viewBox="0 0 256 256"><path d="M205.66,117.66a8,8,0,0,1-11.32,0L136,59.31V216a8,8,0,0,1-16,0V59.31L61.66,117.66a8,8,0,0,1-11.32-11.32l72-72a8,8,0,0,1,11.32,0l72,72A8,8,0,0,1,205.66,117.66Z"/></symbol><symbol id="i-arrow-up-right" viewBox="0 0 256 256"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></symbol><symbol id="i-arrows-in-simple" viewBox="0 0 256 256"><path d="M213.66,53.66,163.31,104H192a8,8,0,0,1,0,16H144a8,8,0,0,1-8-8V64a8,8,0,0,1,16,0V92.69l50.34-50.35a8,8,0,0,1,11.32,11.32ZM112,136H64a8,8,0,0,0,0,16H92.69L42.34,202.34a8,8,0,0,0,11.32,11.32L104,163.31V192a8,8,0,0,0,16,0V144A8,8,0,0,0,112,136Z"/></symbol><symbol id="i-caret-down" viewBox="0 0 256 256"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"/></symbol><symbol id="i-chat-circle-text" viewBox="0 0 256 256"><path d="M168,112a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,112Zm-8,24H96a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16Zm72-8A104,104,0,0,1,79.12,219.82L45.07,231.17a16,16,0,0,1-20.24-20.24l11.35-34.05A104,104,0,1,1,232,128Zm-16,0A88,88,0,1,0,51.81,172.06a8,8,0,0,1,.66,6.54L40,216,77.4,203.53a7.85,7.85,0,0,1,2.53-.42,8,8,0,0,1,4,1.08A88,88,0,0,0,216,128Z"/></symbol><symbol id="i-check" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/></symbol><symbol id="i-cursor-text" viewBox="0 0 256 256"><path d="M184,208a8,8,0,0,1-8,8H160a40,40,0,0,1-32-16,40,40,0,0,1-32,16H80a8,8,0,0,1,0-16H96a24,24,0,0,0,24-24V136H104a8,8,0,0,1,0-16h16V80A24,24,0,0,0,96,56H80a8,8,0,0,1,0-16H96a40,40,0,0,1,32,16,40,40,0,0,1,32-16h16a8,8,0,0,1,0,16H160a24,24,0,0,0-24,24v40h16a8,8,0,0,1,0,16H136v40a24,24,0,0,0,24,24h16A8,8,0,0,1,184,208Z"/></symbol><symbol id="i-device-mobile" viewBox="0 0 256 256"><path d="M176,16H80A24,24,0,0,0,56,40V216a24,24,0,0,0,24,24h96a24,24,0,0,0,24-24V40A24,24,0,0,0,176,16ZM72,64H184V192H72Zm8-32h96a8,8,0,0,1,8,8v8H72V40A8,8,0,0,1,80,32Zm96,192H80a8,8,0,0,1-8-8v-8H184v8A8,8,0,0,1,176,224Z"/></symbol><symbol id="i-devices" viewBox="0 0 256 256"><path d="M224,72H208V64a24,24,0,0,0-24-24H40A24,24,0,0,0,16,64v96a24,24,0,0,0,24,24H152v8a24,24,0,0,0,24,24h48a24,24,0,0,0,24-24V96A24,24,0,0,0,224,72ZM40,168a8,8,0,0,1-8-8V64a8,8,0,0,1,8-8H184a8,8,0,0,1,8,8v8H176a24,24,0,0,0-24,24v72Zm192,24a8,8,0,0,1-8,8H176a8,8,0,0,1-8-8V96a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8Zm-96,16a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h40A8,8,0,0,1,136,208Zm80-96a8,8,0,0,1-8,8H192a8,8,0,0,1,0-16h16A8,8,0,0,1,216,112Z"/></symbol><symbol id="i-download-simple" viewBox="0 0 256 256"><path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,124.69V32a8,8,0,0,0-16,0v92.69L93.66,98.34a8,8,0,0,0-11.32,11.32Z"/></symbol><symbol id="i-drop-half" viewBox="0 0 256 256"><path d="M174,47.75a254.19,254.19,0,0,0-41.45-38.3,8,8,0,0,0-9.18,0A254.19,254.19,0,0,0,82,47.75C54.51,79.32,40,112.6,40,144a88,88,0,0,0,176,0C216,112.6,201.49,79.32,174,47.75ZM200,144a70.57,70.57,0,0,1-.46,8H136V136h63.64Q200,140,200,144ZM183.39,88H136V72h36.89A175.85,175.85,0,0,1,183.39,88ZM136,200h37.19A71.67,71.67,0,0,1,136,215.54Zm0-16V168h59.87a72,72,0,0,1-8,16Zm0-64V104h55.39a116.84,116.84,0,0,1,5.45,16Zm23.89-64H136V32.6A257.22,257.22,0,0,1,159.89,56ZM56,144c0-50,42.26-92.71,64-111.4V215.54A72.08,72.08,0,0,1,56,144Z"/></symbol><symbol id="i-eye-slash" viewBox="0 0 256 256"><path d="M53.92,34.62A8,8,0,1,0,42.08,45.38L61.32,66.55C25,88.84,9.38,123.2,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208a127.11,127.11,0,0,0,52.07-10.83l22,24.21a8,8,0,1,0,11.84-10.76Zm47.33,75.84,41.67,45.85a32,32,0,0,1-41.67-45.85ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A133.16,133.16,0,0,1,25,128c4.69-8.79,19.66-33.39,47.35-49.38l18,19.75a48,48,0,0,0,63.66,70l14.73,16.2A112,112,0,0,1,128,192Zm6-95.43a8,8,0,0,1,3-15.72,48.16,48.16,0,0,1,38.77,42.64,8,8,0,0,1-7.22,8.71,6.39,6.39,0,0,1-.75,0,8,8,0,0,1-8-7.26A32.09,32.09,0,0,0,134,96.57Zm113.28,34.69c-.42.94-10.55,23.37-33.36,43.8a8,8,0,1,1-10.67-11.92A132.77,132.77,0,0,0,231.05,128a133.15,133.15,0,0,0-23.12-30.77C185.67,75.19,158.78,64,128,64a118.37,118.37,0,0,0-19.36,1.57A8,8,0,1,1,106,49.79,134,134,0,0,1,128,48c34.88,0,66.57,13.26,91.66,38.35,18.83,18.83,27.3,37.62,27.65,38.41A8,8,0,0,1,247.31,131.26Z"/></symbol><symbol id="i-file-doc" viewBox="0 0 256 256"><path d="M52,144H36a8,8,0,0,0-8,8v56a8,8,0,0,0,8,8H52a36,36,0,0,0,0-72Zm0,56H44V160h8a20,20,0,0,1,0,40Zm169.53-4.91a8,8,0,0,1,.25,11.31A30.06,30.06,0,0,1,200,216c-17.65,0-32-16.15-32-36s14.35-36,32-36a30.06,30.06,0,0,1,21.78,9.6,8,8,0,0,1-11.56,11.06A14.24,14.24,0,0,0,200,160c-8.82,0-16,9-16,20s7.18,20,16,20a14.24,14.24,0,0,0,10.22-4.66A8,8,0,0,1,221.53,195.09ZM128,144c-17.65,0-32,16.15-32,36s14.35,36,32,36,32-16.15,32-36S145.65,144,128,144Zm0,56c-8.82,0-16-9-16-20s7.18-20,16-20,16,9,16,20S136.82,200,128,200ZM48,120a8,8,0,0,0,8-8V40h88V88a8,8,0,0,0,8,8h48v16a8,8,0,0,0,16,0V88a8,8,0,0,0-2.34-5.66l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40v72A8,8,0,0,0,48,120ZM160,51.31,188.69,80H160Z"/></symbol><symbol id="i-file-pdf" viewBox="0 0 256 256"><path d="M224,152a8,8,0,0,1-8,8H192v16h16a8,8,0,0,1,0,16H192v16a8,8,0,0,1-16,0V152a8,8,0,0,1,8-8h32A8,8,0,0,1,224,152ZM92,172a28,28,0,0,1-28,28H56v8a8,8,0,0,1-16,0V152a8,8,0,0,1,8-8H64A28,28,0,0,1,92,172Zm-16,0a12,12,0,0,0-12-12H56v24h8A12,12,0,0,0,76,172Zm88,8a36,36,0,0,1-36,36H112a8,8,0,0,1-8-8V152a8,8,0,0,1,8-8h16A36,36,0,0,1,164,180Zm-16,0a20,20,0,0,0-20-20h-8v40h8A20,20,0,0,0,148,180ZM40,112V40A16,16,0,0,1,56,24h96a8,8,0,0,1,5.66,2.34l56,56A8,8,0,0,1,216,88v24a8,8,0,0,1-16,0V96H152a8,8,0,0,1-8-8V40H56v72a8,8,0,0,1-16,0ZM160,80h28.69L160,51.31Z"/></symbol><symbol id="i-file-plus" viewBox="0 0 256 256"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-40-64a8,8,0,0,1-8,8H136v16a8,8,0,0,1-16,0V160H104a8,8,0,0,1,0-16h16V128a8,8,0,0,1,16,0v16h16A8,8,0,0,1,160,152Z"/></symbol><symbol id="i-first-aid" viewBox="0 0 256 256"><path d="M216,88H168V40a16,16,0,0,0-16-16H104A16,16,0,0,0,88,40V88H40a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16H88v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V168h48a16,16,0,0,0,16-16V104A16,16,0,0,0,216,88Zm0,64H160a8,8,0,0,0-8,8v56H104V160a8,8,0,0,0-8-8H40V104H96a8,8,0,0,0,8-8V40h48V96a8,8,0,0,0,8,8h56Z"/></symbol><symbol id="i-git-diff" viewBox="0 0 256 256"><path d="M112,152a8,8,0,0,0-8,8v28.69L66.34,151A8,8,0,0,1,64,145.37V95a32,32,0,1,0-16,0v50.38a23.85,23.85,0,0,0,7,17L92.69,200H64a8,8,0,0,0,0,16h48a8,8,0,0,0,8-8V160A8,8,0,0,0,112,152ZM40,64A16,16,0,1,1,56,80,16,16,0,0,1,40,64Zm168,97V110.63a23.85,23.85,0,0,0-7-17L163.31,56H192a8,8,0,0,0,0-16H144a8,8,0,0,0-8,8V96a8,8,0,0,0,16,0V67.31L189.66,105a8,8,0,0,1,2.34,5.66V161a32,32,0,1,0,16,0Zm-8,47a16,16,0,1,1,16-16A16,16,0,0,1,200,208Z"/></symbol><symbol id="i-hash" viewBox="0 0 256 256"><path d="M224,88H175.4l8.47-46.57a8,8,0,0,0-15.74-2.86l-9,49.43H111.4l8.47-46.57a8,8,0,0,0-15.74-2.86L95.14,88H48a8,8,0,0,0,0,16H92.23L83.5,152H32a8,8,0,0,0,0,16H80.6l-8.47,46.57a8,8,0,0,0,6.44,9.3A7.79,7.79,0,0,0,80,224a8,8,0,0,0,7.86-6.57l9-49.43H144.6l-8.47,46.57a8,8,0,0,0,6.44,9.3A7.79,7.79,0,0,0,144,224a8,8,0,0,0,7.86-6.57l9-49.43H208a8,8,0,0,0,0-16H163.77l8.73-48H224a8,8,0,0,0,0-16Zm-76.5,64H99.77l8.73-48h47.73Z"/></symbol><symbol id="i-lock-key" viewBox="0 0 256 256"><path d="M128,112a28,28,0,0,0-8,54.83V184a8,8,0,0,0,16,0V166.83A28,28,0,0,0,128,112Zm0,40a12,12,0,1,1,12-12A12,12,0,0,1,128,152Zm80-72H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80ZM96,56a32,32,0,0,1,64,0V80H96ZM208,208H48V96H208V208Z"/></symbol><symbol id="i-pencil-simple-line" viewBox="0 0 256 256"><path d="M227.32,73.37,182.63,28.69a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H216a8,8,0,0,0,0-16H115.32l112-112A16,16,0,0,0,227.32,73.37ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.69,147.32,64l24-24L216,84.69Z"/></symbol><symbol id="i-plus" viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/></symbol><symbol id="i-scan" viewBox="0 0 256 256"><path d="M224,40V80a8,8,0,0,1-16,0V48H176a8,8,0,0,1,0-16h40A8,8,0,0,1,224,40ZM80,208H48V176a8,8,0,0,0-16,0v40a8,8,0,0,0,8,8H80a8,8,0,0,0,0-16Zm136-40a8,8,0,0,0-8,8v32H176a8,8,0,0,0,0,16h40a8,8,0,0,0,8-8V176A8,8,0,0,0,216,168ZM40,88a8,8,0,0,0,8-8V48H80a8,8,0,0,0,0-16H40a8,8,0,0,0-8,8V80A8,8,0,0,0,40,88ZM80,72h96a8,8,0,0,1,8,8v96a8,8,0,0,1-8,8H80a8,8,0,0,1-8-8V80A8,8,0,0,1,80,72Zm8,96h80V88H88Z"/></symbol><symbol id="i-selection-slash" viewBox="0 0 256 256"><path d="M104,40a8,8,0,0,1,8-8h32a8,8,0,0,1,0,16H112A8,8,0,0,1,104,40Zm40,168H112a8,8,0,0,0,0,16h32a8,8,0,0,0,0-16ZM208,32H184a8,8,0,0,0,0,16h24V72a8,8,0,0,0,16,0V48A16,16,0,0,0,208,32Zm8,72a8,8,0,0,0-8,8v32a8,8,0,0,0,16,0V112A8,8,0,0,0,216,104ZM40,152a8,8,0,0,0,8-8V112a8,8,0,0,0-16,0v32A8,8,0,0,0,40,152Zm32,56H48V184a8,8,0,0,0-16,0v24a16,16,0,0,0,16,16H72a8,8,0,0,0,0-16ZM53.92,34.62A8,8,0,1,0,42.08,45.38l160,176a8,8,0,1,0,11.84-10.76Z"/></symbol><symbol id="i-shield-check" viewBox="0 0 256 256"><path d="M208,40H48A16,16,0,0,0,32,56v56c0,52.72,25.52,84.67,46.93,102.19,23.06,18.86,46,25.26,47,25.53a8,8,0,0,0,4.2,0c1-.27,23.91-6.67,47-25.53C198.48,196.67,224,164.72,224,112V56A16,16,0,0,0,208,40Zm0,72c0,37.07-13.66,67.16-40.6,89.42A129.3,129.3,0,0,1,128,223.62a128.25,128.25,0,0,1-38.92-21.81C61.82,179.51,48,149.3,48,112l0-56,160,0ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z"/></symbol><symbol id="i-signature" viewBox="0 0 256 256"><path d="M232,168H63.86c2.66-5.24,5.33-10.63,8-16.11,15,1.65,32.58-8.78,52.66-31.14,5,13.46,14.45,30.93,30.58,31.25,9.06.18,18.11-5.2,27.42-16.37C189.31,143.75,203.3,152,232,152a8,8,0,0,0,0-16c-30.43,0-39.43-10.45-40-16.11a7.67,7.67,0,0,0-5.46-7.75,8.14,8.14,0,0,0-9.25,3.49c-12.07,18.54-19.38,20.43-21.92,20.37-8.26-.16-16.66-19.52-19.54-33.42a8,8,0,0,0-14.09-3.37C101.54,124.55,88,133.08,79.57,135.29,88.06,116.42,94.4,99.85,98.46,85.9c6.82-23.44,7.32-39.83,1.51-50.1-3-5.38-9.34-11.8-22.06-11.8C61.85,24,49.18,39.18,43.14,65.65c-3.59,15.71-4.18,33.21-1.62,48s7.87,25.55,15.59,31.94c-3.73,7.72-7.53,15.26-11.23,22.41H24a8,8,0,0,0,0,16H37.41c-11.32,21-20.12,35.64-20.26,35.88a8,8,0,1,0,13.71,8.24c.15-.26,11.27-18.79,24.7-44.12H232a8,8,0,0,0,0-16ZM58.74,69.21C62.72,51.74,70.43,40,77.91,40c5.33,0,7.1,1.86,8.13,3.67,3,5.33,6.52,24.19-21.66,86.39C56.12,118.78,53.31,93,58.74,69.21Z"/></symbol><symbol id="i-sparkle" viewBox="0 0 256 256"><path d="M197.58,129.06,146,110l-19-51.62a15.92,15.92,0,0,0-29.88,0L78,110l-51.62,19a15.92,15.92,0,0,0,0,29.88L78,178l19,51.62a15.92,15.92,0,0,0,29.88,0L146,178l51.62-19a15.92,15.92,0,0,0,0-29.88ZM137,164.22a8,8,0,0,0-4.74,4.74L112,223.85,91.78,169A8,8,0,0,0,87,164.22L32.15,144,87,123.78A8,8,0,0,0,91.78,119L112,64.15,132.22,119a8,8,0,0,0,4.74,4.74L191.85,144ZM144,40a8,8,0,0,1,8-8h16V16a8,8,0,0,1,16,0V32h16a8,8,0,0,1,0,16H184V64a8,8,0,0,1-16,0V48H152A8,8,0,0,1,144,40ZM248,88a8,8,0,0,1-8,8h-8v8a8,8,0,0,1-16,0V96h-8a8,8,0,0,1,0-16h8V72a8,8,0,0,1,16,0v8h8A8,8,0,0,1,248,88Z"/></symbol><symbol id="i-squares-four" viewBox="0 0 256 256"><path d="M104,40H56A16,16,0,0,0,40,56v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,64H56V56h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,64H152V56h48v48Zm-96,32H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm0,64H56V152h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,200,136Zm0,64H152V152h48v48Z"/></symbol><symbol id="i-stack" viewBox="0 0 256 256"><path d="M230.91,172A8,8,0,0,1,228,182.91l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,36,169.09l92,53.65,92-53.65A8,8,0,0,1,230.91,172ZM220,121.09l-92,53.65L36,121.09A8,8,0,0,0,28,134.91l96,56a8,8,0,0,0,8.06,0l96-56A8,8,0,1,0,220,121.09ZM24,80a8,8,0,0,1,4-6.91l96-56a8,8,0,0,1,8.06,0l96,56a8,8,0,0,1,0,13.82l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,24,80Zm23.88,0L128,126.74,208.12,80,128,33.26Z"/></symbol><symbol id="i-textbox" viewBox="0 0 256 256"><path d="M112,40a8,8,0,0,0-8,8V64H24A16,16,0,0,0,8,80v96a16,16,0,0,0,16,16h80v16a8,8,0,0,0,16,0V48A8,8,0,0,0,112,40ZM24,176V80h80v96ZM248,80v96a16,16,0,0,1-16,16H144a8,8,0,0,1,0-16h88V80H144a8,8,0,0,1,0-16h88A16,16,0,0,1,248,80ZM88,112a8,8,0,0,1-8,8H72v24a8,8,0,0,1-16,0V120H48a8,8,0,0,1,0-16H80A8,8,0,0,1,88,112Z"/></symbol><symbol id="i-translate" viewBox="0 0 256 256"><path d="M247.15,212.42l-56-112a8,8,0,0,0-14.31,0l-21.71,43.43A88,88,0,0,1,108,126.93,103.65,103.65,0,0,0,135.69,64H160a8,8,0,0,0,0-16H104V32a8,8,0,0,0-16,0V48H32a8,8,0,0,0,0,16h87.63A87.76,87.76,0,0,1,96,116.35a87.74,87.74,0,0,1-19-31,8,8,0,1,0-15.08,5.34A103.63,103.63,0,0,0,84,127a87.55,87.55,0,0,1-52,17,8,8,0,0,0,0,16,103.46,103.46,0,0,0,64-22.08,104.18,104.18,0,0,0,51.44,21.31l-26.6,53.19a8,8,0,0,0,14.31,7.16L148.94,192h70.11l13.79,27.58A8,8,0,0,0,240,224a8,8,0,0,0,7.15-11.58ZM156.94,176,184,121.89,211.05,176Z"/></symbol><symbol id="i-warning-circle" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm-8-80V80a8,8,0,0,1,16,0v56a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,172Z"/></symbol><symbol id="i-wifi-slash" viewBox="0 0 256 256"><path d="M213.92,210.62a8,8,0,1,1-11.84,10.76l-52-57.15a60,60,0,0,0-57.41,7.24,8,8,0,1,1-9.42-12.93A75.43,75.43,0,0,1,128,144c1.28,0,2.55,0,3.82.1L104.9,114.49A108,108,0,0,0,61,135.31,8,8,0,0,1,49.73,134,8,8,0,0,1,51,122.77a124.27,124.27,0,0,1,41.71-21.66L69.37,75.4a155.43,155.43,0,0,0-40.29,24A8,8,0,0,1,18.92,87,171.87,171.87,0,0,1,58,62.86L42.08,45.38A8,8,0,1,1,53.92,34.62ZM128,192a12,12,0,1,0,12,12A12,12,0,0,0,128,192ZM237.08,87A172.3,172.3,0,0,0,106,49.4a8,8,0,1,0,2,15.87A158.33,158.33,0,0,1,128,64a156.25,156.25,0,0,1,98.92,35.37A8,8,0,0,0,237.08,87ZM195,135.31a8,8,0,0,0,11.24-1.3,8,8,0,0,0-1.3-11.24,124.25,124.25,0,0,0-51.73-24.2A8,8,0,1,0,150,114.24,108.12,108.12,0,0,1,195,135.31Z"/></symbol><symbol id="i-windows-logo" viewBox="0 0 256 256"><path d="M208,136H128a8,8,0,0,0-8,8v57.45a8,8,0,0,0,6.57,7.88l80,14.54A7.61,7.61,0,0,0,208,224a8,8,0,0,0,8-8V144A8,8,0,0,0,208,136Zm-8,70.41-64-11.63V152h64ZM96,136H32a8,8,0,0,0-8,8v40a8,8,0,0,0,6.57,7.87l64,11.64a8.54,8.54,0,0,0,1.43.13,8,8,0,0,0,8-8V144A8,8,0,0,0,96,136Zm-8,50.05-48-8.73V152H88ZM213.13,33.86a8,8,0,0,0-6.56-1.73l-80,14.55A8,8,0,0,0,120,54.55V112a8,8,0,0,0,8,8h80a8,8,0,0,0,8-8V40A8,8,0,0,0,213.13,33.86ZM200,104H136V61.22l64-11.63ZM101.13,54.22a8,8,0,0,0-6.56-1.73l-64,11.64A8,8,0,0,0,24,72v40a8,8,0,0,0,8,8H96a8,8,0,0,0,8-8V60.36A8,8,0,0,0,101.13,54.22ZM88,104H40V78.68L88,70Z"/></symbol></svg>
+<a class="skip button-sm" href="#main">Skip to content</a>
+
+<header id="site-header">
+  <nav class="nav" aria-label="Main">
+    <a class="nav-brand title-3" href="#top" aria-label="MK PDF home"><img src="icon.png" alt="" width="32" height="32">MK PDF</a>
+    <div class="nav-links title-4">
+      <a href="#features">Features</a>
+      <a href="#toolkit">Toolkit</a>
+      <a href="#how">How it works</a>
+      <a href="#download">Download</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a class="btn btn-primary button-sm" href="#download"><svg class="i"><use href="#i-download-simple"/></svg>Download</a>
+    <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button>
+  </nav>
+  <div class="mobile-menu heading-4" id="mobile-menu" aria-hidden="true">
+    <a href="#features">Features</a>
+    <a href="#toolkit">Toolkit</a>
+    <a href="#how">How it works</a>
+    <a href="#download">Download</a>
+    <a href="#faq">FAQ</a>
+  </div>
+</header>
+
+<main id="main">
+  <!-- Hero -->
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="wrap">
+      <h1 id="hero-title" class="heading-1 hero-gradient reveal">Edit the real text<br class="br-d"> in any PDF,<br class="br-d"> on every device you own</h1>
+      <p class="sub title-1 reveal">Click a paragraph and type. MK PDF rewrites the words inside the page with the same font, size and spacing, then signs, organizes, redacts and converts it on Mac, Windows, Android and iPhone.</p>
+      <div class="hero-cta reveal">
+        <a class="btn btn-primary btn-large button-lg" href="#download" data-primary-cta>
+          <svg class="i" data-cta-icon><use href="#i-download-simple"/></svg><span data-cta-label>Download MK PDF free</span>
+        </a>
+        <a class="link caption-1" href="#download">All platforms <svg class="i"><use href="#i-arrow-right"/></svg></a>
+      </div>
+      <div class="meta caption-1 reveal">
+        <span><svg class="i"><use href="#i-check"/></svg>Free download</span>
+        <span><svg class="i"><use href="#i-check"/></svg>No account</span>
+        <span><svg class="i"><use href="#i-check"/></svg>Files never leave your device</span>
+      </div>
+
+      <div class="stage reveal" role="img" aria-label="MK PDF editing a date inside a service agreement, with the original font matched">
+        <div class="window" aria-hidden="true">
+          <div class="win-bar">
+            <div class="dots"><i></i><i></i><i></i></div>
+            <div class="tabs caption-4">
+              <span class="tab on"><svg class="i"><use href="#i-file-pdf"/></svg>Service agreement.pdf</span>
+              <span class="tab"><svg class="i"><use href="#i-file-pdf"/></svg>Scan 0412.pdf</span>
+              <span class="tab"><svg class="i"><use href="#i-file-pdf"/></svg>Floor plan.pdf</span>
+            </div>
+          </div>
+          <div class="toolbar caption-4">
+            <span class="tool on">Edit text and images</span><span class="tool">Comment</span><span class="tool">Fill and sign</span><span class="tool">Organize</span><span class="tool">Redact</span><span class="tool">Export</span>
+          </div>
+          <div class="win-body">
+            <div class="thumbs">
+              <div class="thumb on"><i></i><i style="width:70%"></i><i></i><i style="width:55%"></i></div>
+              <div class="thumb"><i style="width:60%"></i><i></i><i></i><i style="width:80%"></i></div>
+              <div class="thumb"><i></i><i style="width:40%"></i></div>
+            </div>
+            <div class="paper">
+              <div class="p-title">Service agreement</div>
+              <span class="p-line" style="width:92%"></span>
+              <span class="p-line" style="width:86%"></span>
+              <p class="p-text">The finished work will be delivered by<span class="edit-box"><span data-typed>14 March 2027</span><span class="caret"></span></span>to the client at the address above.</p>
+              <span class="p-line" style="width:96%"></span>
+              <span class="p-line" style="width:78%"></span>
+              <p class="p-text">Account reference <span class="redact"></span> is kept on file.</p>
+              <span class="p-line" style="width:64%"></span>
+              <div class="sig">
+                <div>
+                  <svg viewBox="0 0 144 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 34c10-18 18-26 22-22s-8 26-2 26 14-24 20-22-4 18 2 18 10-14 16-14 2 12 8 12 12-10 18-12 10 6 16 4 14-8 20-10"/></svg>
+                  <div class="sig-line">Signed, Layla Haddad</div>
+                </div>
+                <div class="sig-line">Date: 26 Nov 2026</div>
+              </div>
+            </div>
+            <div class="inspector caption-4">
+              <div class="title-4">Text</div>
+              <div class="field"><span class="secondary">Font</span><span class="val">Georgia <svg class="i"><use href="#i-caret-down"/></svg></span></div>
+              <div class="field"><span class="secondary">Size</span><span class="val">12 pt <svg class="i"><use href="#i-caret-down"/></svg></span></div>
+              <div class="field"><span class="secondary">Colour</span><div class="swatches"><i class="on" style="background:#1A1A1A"></i><i style="background:#2A2AA8"></i><i style="background:#C2283F"></i><i style="background:#2E7D4F"></i></div></div>
+              <div class="match"><svg class="i"><use href="#i-check"/></svg>Matches the original font</div>
+            </div>
+          </div>
+        </div>
+        <div class="float f1 caption-1" aria-hidden="true"><svg class="i"><use href="#i-cursor-text"/></svg>Real page text, not an overlay</div>
+        <div class="float f2 caption-1" aria-hidden="true"><svg class="i"><use href="#i-wifi-slash"/></svg>Works offline</div>
+      </div>
+
+      <div class="platform-strip reveal">
+        <p class="caption-2 secondary">One app, the same tools on</p>
+        <ul class="title-3">
+          <li><svg class="i"><use href="#i-apple-logo"/></svg>macOS</li>
+          <li><svg class="i"><use href="#i-windows-logo"/></svg>Windows</li>
+          <li><svg class="i"><use href="#i-android-logo"/></svg>Android</li>
+          <li><svg class="i"><use href="#i-device-mobile"/></svg>iPhone and iPad</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits -->
+  <section id="features" aria-labelledby="features-title">
+    <div class="wrap">
+      <div class="head reveal">
+        <h2 id="features-title" class="heading-2">Fix the document itself,<br class="br-d"> not a copy of it</h2>
+        <p class="title-2">Most PDF apps let you draw on top of a page. MK PDF opens the page up and changes what is really there.</p>
+      </div>
+
+      <div class="bento">
+        <article class="card c-4 reveal">
+          <div class="ic"><svg class="i"><use href="#i-pencil-simple-line"/></svg></div>
+          <h3 class="heading-5">Fix a typo in seconds, without retyping the page</h3>
+          <p class="body-3">Click any paragraph and type. The old letters are removed from the page and the new ones are drawn with the same font, size, colour and line spacing. Long paragraphs reflow, Arabic and other right to left text works, and everything else stays where it was.</p>
+          <div class="demo before-after body-6">
+            <div class="ba-row"><span class="k caption-3">BEFORE</span><span class="strike">Payment is due within 30 days of the invoice.</span></div>
+            <div class="ba-row"><span class="k after caption-3">AFTER</span><span>Payment is due within 14 days of the invoice.</span></div>
+          </div>
+        </article>
+
+        <article class="card c-2 reveal">
+          <div class="ic"><svg class="i"><use href="#i-scan"/></svg></div>
+          <h3 class="heading-5">Scans you can edit</h3>
+          <p class="body-3">Paper scans are read with offline text recognition, so you can search them, copy from them and retype a line.</p>
+          <div class="demo"><div class="scanline body-6"><span class="bar"></span>Received with thanks, 12 boxes of A4 paper.</div></div>
+        </article>
+
+        <article class="card c-2 reveal">
+          <div class="ic"><svg class="i"><use href="#i-file-doc"/></svg></div>
+          <h3 class="heading-5">Exports that keep the layout</h3>
+          <p class="body-3">Paragraphs, fonts, tables and images are rebuilt, so the Word file looks like the PDF.</p>
+          <div class="demo formats caption-4">
+            <span class="chip">Word</span><span class="chip">Excel</span><span class="chip">PowerPoint</span><span class="chip">HTML</span><span class="chip">OpenDocument</span><span class="chip">Markdown</span><span class="chip">RTF</span><span class="chip">CSV</span><span class="chip">PNG</span><span class="chip">JPEG</span><span class="chip">HEIC</span><span class="chip">TIFF</span>
+          </div>
+        </article>
+
+        <article class="card c-2 reveal">
+          <div class="ic"><svg class="i"><use href="#i-selection-slash"/></svg></div>
+          <h3 class="heading-5">Redactions that really remove</h3>
+          <p class="body-3">A black box is not enough. MK PDF deletes the exact letters underneath, keeps the page sharp and searchable, and can strip the metadata too.</p>
+          <div class="demo body-6">IBAN <span class="redact" style="width:120px"></span> <span class="caption-5 secondary">gone from the file</span></div>
+        </article>
+
+        <article class="card c-2 reveal">
+          <div class="ic"><svg class="i"><use href="#i-shield-check"/></svg></div>
+          <h3 class="heading-5">Private by design</h3>
+          <p class="body-3">There is no server to upload to. Contracts, IDs and medical letters stay on your device.</p>
+          <ul class="demo check-list body-6">
+            <li><svg class="i"><use href="#i-check"/></svg>No account or sign in</li>
+            <li><svg class="i"><use href="#i-check"/></svg>No analytics, ads or tracking</li>
+            <li><svg class="i"><use href="#i-check"/></svg>Text recognition runs offline</li>
+          </ul>
+        </article>
+
+        <article class="card c-3 reveal">
+          <div class="ic"><svg class="i"><use href="#i-devices"/></svg></div>
+          <h3 class="heading-5">The same tools on all four of your devices</h3>
+          <p class="body-3">Your Mac, your Windows laptop, your Android phone and your iPhone. Start a contract at your desk and sign it on the train.</p>
+          <div class="platforms" aria-label="Mac, Windows, Android and iPhone">
+            <span title="Mac"><svg class="i"><use href="#i-apple-logo"/></svg></span>
+            <span title="Windows"><svg class="i"><use href="#i-windows-logo"/></svg></span>
+            <span title="Android"><svg class="i"><use href="#i-android-logo"/></svg></span>
+            <span title="iPhone"><svg class="i"><use href="#i-device-mobile"/></svg></span>
+          </div>
+        </article>
+
+        <article class="card c-3 reveal">
+          <div class="ic"><svg class="i"><use href="#i-arrow-clockwise"/></svg></div>
+          <h3 class="heading-5">Always the newest version, without reinstalling</h3>
+          <p class="body-3">MK PDF checks for a new release when it opens and every hour after. One tap downloads it, installs it over itself and restarts.</p>
+          <div class="demo body-6 update-row">
+            <span><span class="title-4">A new version is ready</span><br><span class="caption-5 secondary" data-update-version>MK PDF 1.3.17</span></span>
+            <span class="btn btn-primary button-sm" aria-hidden="true">Install</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tagline reveal -->
+  <section class="tagline" aria-label="What MK PDF does">
+    <div class="wrap">
+      <p class="heading-2" data-tagline>Not a layer on top. Your words, rewritten <span class="hl">inside the page</span>, in the font it already uses.</p>
+    </div>
+  </section>
+
+  <!-- Toolkit -->
+  <section id="toolkit" aria-labelledby="toolkit-title">
+    <div class="wrap">
+      <div class="head reveal">
+        <h2 id="toolkit-title" class="heading-2">Every PDF job,<br class="br-d"> in one window</h2>
+        <p class="title-2">Open several files as tabs and pick the tool you need. No upsells and no separate apps.</p>
+      </div>
+      <div class="kit reveal">
+        <article class="kit-cell"><div class="row"><svg class="i"><use href="#i-signature"/></svg></div><h3 class="title-2">Fill and sign</h3><p class="body-6">Fill form fields, then draw, type or import a signature. It is saved for next time.</p></article>
+        <article class="kit-cell"><div class="row"><svg class="i"><use href="#i-squares-four"/></svg></div><h3 class="title-2">Organize pages</h3><p class="body-6">Reorder, rotate, delete, insert, extract, split by range or bookmark, and crop.</p></article>
+        <article class="kit-cell"><div class="row"><svg class="i"><use href="#i-chat-circle-text"/></svg></div><h3 class="title-2">Comment and mark up</h3><p class="body-6">Highlights, notes, shapes, arrows, freehand ink and 12 stamps with your name and date.</p></article>
+        <article class="kit-cell"><div class="row"><svg class="i"><use href="#i-lock-key"/></svg></div><h3 class="title-2">Protect</h3><p class="body-6">Add a password to open, or block printing, copying and editing.</p></article>
+        <article class="kit-cell"><div class="row"><svg class="i"><use href="#i-arrows-in-simple"/></svg></div><h3 class="title-2">Compress</h3><p class="body-6">Four presets, with the size before and after so you know it fits in an email.</p></article>
+        <article class="kit-cell"><div class="row"><svg class="i"><use href="#i-git-diff"/></svg></div><h3 class="title-2">Compare versions</h3><p class="body-6">Two files side by side with a list of every word that changed.</p></article>
+        <article class="kit-cell"><div class="row"><svg class="i"><use href="#i-textbox"/></svg></div><h3 class="title-2">Build forms</h3><p class="body-6">Turn any PDF into a form with text fields, checkboxes and dropdowns.</p></article>
+        <article class="kit-cell"><div class="row"><svg class="i"><use href="#i-stack"/></svg></div><h3 class="title-2">Batch tools</h3><p class="body-6">Compress, OCR, watermark, number or convert a folder of PDFs in one run.</p></article>
+        <article class="kit-cell"><div class="row"><svg class="i"><use href="#i-file-plus"/></svg></div><h3 class="title-2">Create PDFs</h3><p class="body-6">From images, Word, web pages, text or your clipboard, or combine several files.</p></article>
+        <article class="kit-cell"><div class="row"><svg class="i"><use href="#i-hash"/></svg></div><h3 class="title-2">Stamp every page</h3><p class="body-6">Watermarks, headers and footers, page numbers and Bates numbering.</p></article>
+        <article class="kit-cell"><div class="row"><svg class="i"><use href="#i-translate"/></svg><span class="badge caption-4">Mac and iPhone</span></div><h3 class="title-2">Translate</h3><p class="body-6">Translate a document on device with Apple's translator. Nothing is sent online.</p></article>
+        <article class="kit-cell"><div class="row"><svg class="i"><use href="#i-sparkle"/></svg><span class="badge caption-4">Mac</span></div><h3 class="title-2">AI assistant</h3><p class="body-6">Summaries and answers about your PDF, worked out on your Mac with Apple Intelligence.</p></article>
+        <article class="kit-cell"><div class="row"><svg class="i"><use href="#i-first-aid"/></svg></div><h3 class="title-2">Repair</h3><p class="body-6">Rebuilds every page of a damaged PDF that other apps refuse to open.</p></article>
+        <article class="kit-cell"><div class="row"><svg class="i"><use href="#i-eye-slash"/></svg></div><h3 class="title-2">Comfortable reading</h3><p class="body-6">Night mode, read mode, read aloud, bookmarks and search with every result listed.</p></article>
+        <article class="kit-cell"><div class="row"><svg class="i"><use href="#i-drop-half"/></svg></div><h3 class="title-2">Images and links</h3><p class="body-6">Move, resize, replace or save the pictures in a page, and link to sites or pages.</p></article>
+        <article class="kit-cell"><div class="row"><svg class="i"><use href="#i-arrow-clockwise"/></svg></div><h3 class="title-2">Full undo</h3><p class="body-6">Every change can be undone and redone, so trying something costs nothing.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how" aria-labelledby="how-title">
+    <div class="wrap how">
+      <div class="how-intro reveal">
+        <h2 id="how-title" class="heading-2">From download to edited PDF in three steps</h2>
+        <p class="title-2">No account to create and nothing to set up. Open a PDF and start editing.</p>
+        <a class="btn btn-secondary button-md" href="#download"><svg class="i"><use href="#i-download-simple"/></svg>Choose your platform</a>
+      </div>
+      <ol class="steps">
+        <li class="step reveal"><span class="num caption-3">01</span><div><h3 class="heading-6">Download for your device</h3><p class="body-3">Pick Mac, Windows, Android or iPhone. On Windows it installs for your user only, with no administrator password.</p></div></li>
+        <li class="divider" aria-hidden="true"></li>
+        <li class="step reveal"><span class="num caption-3">02</span><div><h3 class="heading-6">Open your PDF</h3><p class="body-3">Open one file or several at once. Each opens as a tab, and scanned pages are made readable automatically.</p></div></li>
+        <li class="divider" aria-hidden="true"></li>
+        <li class="step reveal"><span class="num caption-3">03</span><div><h3 class="heading-6">Click, type, save</h3><p class="body-3">Click the paragraph you want to change and type. Sign it, export it to Word or share it straight away.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Download -->
+  <section id="download" aria-labelledby="download-title">
+    <div class="wrap">
+      <div class="head reveal">
+        <h2 id="download-title" class="heading-2">Get MK PDF<br class="br-d"> for every device</h2>
+        <div style="display:grid;gap:var(--spacing-200)">
+          <p class="title-2">Free, with no account. Every copy keeps itself up to date.</p>
+          <div class="dl-meta caption-1">
+            <span>Latest release <b class="mono" data-version><span class="skel"></span></b></span>
+            <span>Published <span data-date><span class="skel wide"></span></span></span>
+            <a class="link" href="https://github.com/Mkuz1/MK-PDF/releases/latest" data-release-link>Release notes <svg class="i"><use href="#i-arrow-up-right"/></svg></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert body-6" role="alert" data-error>
+        <svg class="i"><use href="#i-warning-circle"/></svg>
+        <span>The file list could not be loaded from GitHub. The buttons below open the release page instead, where every file is listed. You can also <a href="https://github.com/Mkuz1/MK-PDF/releases/latest">open the latest release</a> directly.</span>
+      </div>
+
+      <div class="dl-grid">
+        <article class="dl reveal" data-os="mac">
+          <span class="os"><svg class="i"><use href="#i-apple-logo"/></svg></span>
+          <div><h3 class="dl-title heading-6">Mac<span class="you caption-3" hidden><svg class="i"><use href="#i-check"/></svg>Your device</span></h3><p class="caption-2 note">Apple silicon and Intel. Drag it to Applications, then right click and choose Open the first time.</p></div>
+          <div class="actions">
+            <a class="btn btn-primary button-md" data-asset="dmg" href="https://github.com/Mkuz1/MK-PDF/releases/latest"><span><svg class="i"><use href="#i-download-simple"/></svg>Disk image</span><span class="size caption-4"><span class="skel"></span></span></a>
+          </div>
+        </article>
+        <article class="dl reveal" data-os="windows">
+          <span class="os"><svg class="i"><use href="#i-windows-logo"/></svg></span>
+          <div><h3 class="dl-title heading-6">Windows<span class="you caption-3" hidden><svg class="i"><use href="#i-check"/></svg>Your device</span></h3><p class="caption-2 note">64 bit. No administrator rights needed. If SmartScreen warns you, choose More info, then Run anyway.</p></div>
+          <div class="actions">
+            <a class="btn btn-primary button-md" data-asset="win" href="https://github.com/Mkuz1/MK-PDF/releases/latest"><span><svg class="i"><use href="#i-download-simple"/></svg>Installer</span><span class="size caption-4"><span class="skel"></span></span></a>
+            <a class="btn btn-secondary button-md" data-asset="portable" href="https://github.com/Mkuz1/MK-PDF/releases/latest"><span>Portable</span><span class="size caption-4"><span class="skel"></span></span></a>
+          </div>
+        </article>
+        <article class="dl reveal" data-os="android">
+          <span class="os"><svg class="i"><use href="#i-android-logo"/></svg></span>
+          <div><h3 class="dl-title heading-6">Android<span class="you caption-3" hidden><svg class="i"><use href="#i-check"/></svg>Your device</span></h3><p class="caption-2 note">Open the file on your phone. Android asks once to allow installs from your browser.</p></div>
+          <div class="actions">
+            <a class="btn btn-primary button-md" data-asset="apk" href="https://github.com/Mkuz1/MK-PDF/releases/latest"><span><svg class="i"><use href="#i-download-simple"/></svg>APK</span><span class="size caption-4"><span class="skel"></span></span></a>
+          </div>
+        </article>
+        <article class="dl reveal" data-os="ios">
+          <span class="os"><svg class="i"><use href="#i-device-mobile"/></svg></span>
+          <div><h3 class="dl-title heading-6">iPhone and iPad<span class="you caption-3" hidden><svg class="i"><use href="#i-check"/></svg>Your device</span></h3><p class="caption-2 note">Unsigned app. Install it with AltStore or Sideloadly and your Apple ID.</p></div>
+          <div class="actions">
+            <a class="btn btn-primary button-md" data-asset="ipa" href="https://github.com/Mkuz1/MK-PDF/releases/latest"><span><svg class="i"><use href="#i-download-simple"/></svg>IPA</span><span class="size caption-4"><span class="skel"></span></span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" aria-labelledby="faq-title">
+    <div class="wrap faq-layout">
+      <div class="faq-intro reveal">
+        <h2 id="faq-title" class="heading-2">Before you download</h2>
+        <p class="title-2">Something else on your mind? Ask on GitHub and get an answer from the people who build MK PDF.</p>
+        <a class="link caption-1" href="https://github.com/Mkuz1/MK-PDF/issues">Ask a question on GitHub <svg class="i"><use href="#i-arrow-up-right"/></svg></a>
+      </div>
+      <div class="faq reveal">
+        <div class="divider"></div>
+        <details><summary class="title-2">Is MK PDF free?<svg class="i"><use href="#i-plus"/></svg></summary><p class="a body-3">Yes. Every version on the release page is a free download for Mac, Windows, Android and iPhone, with no account and no ads.</p></details>
+        <div class="divider"></div>
+        <details><summary class="title-2">Are my documents uploaded anywhere?<svg class="i"><use href="#i-plus"/></svg></summary><p class="a body-3">No. Editing, signing, text recognition, compression and conversion all happen on your device. MK PDF has no server and collects no data. The only thing it asks the internet is whether a newer version exists.</p></details>
+        <div class="divider"></div>
+        <details><summary class="title-2">Does it really change the text, or draw over it?<svg class="i"><use href="#i-plus"/></svg></summary><p class="a body-3">It changes the text. The original letters are removed from the page and the new words are written with the same font, so the result is still searchable, selectable text, not a white box with a label on top.</p></details>
+        <div class="divider"></div>
+        <details><summary class="title-2">Can I edit a scanned document?<svg class="i"><use href="#i-plus"/></svg></summary><p class="a body-3">Yes. When you edit a page that is only a picture, MK PDF recognizes the text offline first. Your edit paints over the old line in the paper colour and writes the new words in the ink colour.</p></details>
+        <div class="divider"></div>
+        <details><summary class="title-2">Is every feature on every platform?<svg class="i"><use href="#i-plus"/></svg></summary><p class="a body-3">Almost. The AI assistant needs Apple Intelligence, so it is on the Mac only. Translation uses Apple's on device translator, so it is on the Mac and on iPhone with iOS 18 or later. Everything else is the same everywhere.</p></details>
+        <div class="divider"></div>
+        <details><summary class="title-2">Why does my computer warn me the first time?<svg class="i"><use href="#i-plus"/></svg></summary><p class="a body-3">The release builds are not signed with a paid certificate yet. On a Mac, right click the app and choose Open. On Windows, choose More info and then Run anyway. You only do this once.</p></details>
+        <div class="divider"></div>
+        <details><summary class="title-2">How do I install it on iPhone?<svg class="i"><use href="#i-plus"/></svg></summary><p class="a body-3">Apple only runs signed apps, so sign the IPA with a sideloading tool such as AltStore or Sideloadly and your Apple ID. With a free Apple ID it has to be signed again every 7 days, which the tool can do for you. Saved files appear in Files under On My iPhone, MK PDF.</p></details>
+        <div class="divider"></div>
+        <details><summary class="title-2">How do updates work?<svg class="i"><use href="#i-plus"/></svg></summary><p class="a body-3">MK PDF checks for a new release when it opens, every hour, and when you switch back to it. Choose Download and Install and it replaces itself and restarts. Your settings and signatures stay.</p></details>
+        <div class="divider"></div>
+        <details><summary class="title-2">What can't it do yet?<svg class="i"><use href="#i-plus"/></svg></summary><p class="a body-3">Certificate based digital signatures, PDF/A conversion and turning Excel or PowerPoint files into PDFs are not included. Rotated or vertical text, and text inside some embedded objects, can't be edited in place yet; use Cover and retype for those.</p></details>
+        <div class="divider"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final" aria-labelledby="final-title">
+    <div class="wrap">
+      <div class="box reveal">
+        <img src="icon.png" alt="MK PDF app icon" width="80" height="80">
+        <h2 id="final-title" class="heading-2">Your next PDF edit<br class="br-d"> takes one click</h2>
+        <p class="title-2">Free on Mac, Windows, Android and iPhone. No account, and your files stay yours.</p>
+        <a class="btn btn-primary btn-large button-lg" href="#download" data-primary-cta>
+          <svg class="i" data-cta-icon><use href="#i-download-simple"/></svg><span data-cta-label>Download MK PDF free</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top caption-2">
+      <div class="foot-brand">
+        <span class="name title-3"><img src="icon.png" alt="" width="28" height="28">MK PDF</span>
+        <p>Edit, sign, organize and convert PDFs on Mac, Windows, Android and iPhone. Your files never leave your device.</p>
+      </div>
+      <nav class="foot-col" aria-label="Product">
+        <h4 class="title-4">Product</h4>
+        <a href="#features">Features</a>
+        <a href="#toolkit">Toolkit</a>
+        <a href="#download">Download</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <nav class="foot-col" aria-label="Resources">
+        <h4 class="title-4">Resources</h4>
+        <a href="https://github.com/Mkuz1/MK-PDF/releases/latest" data-release-link>Release notes</a>
+        <a href="https://github.com/Mkuz1/MK-PDF/releases">All releases</a>
+        <a href="https://github.com/Mkuz1/MK-PDF">Source on GitHub</a>
+        <a href="https://github.com/Mkuz1/MK-PDF/issues">Report a problem</a>
+      </nav>
+      <nav class="foot-col" aria-label="Legal">
+        <h4 class="title-4">Legal</h4>
+        <a href="https://github.com/Mkuz1/MK-PDF/blob/main/PRIVACY.md">Privacy policy</a>
+      </nav>
+    </div>
+    <div class="divider" style="margin-top:var(--spacing-700)"></div>
+    <div class="foot-bottom caption-5">
+      <span>© 2026 MK PDF</span>
+      <a class="link" href="#top">Back to top <svg class="i"><use href="#i-arrow-up"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const REPO = 'Mkuz1/MK-PDF';
+  const RELEASES = `https://github.com/${REPO}/releases/latest`;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Platform detection */
+  const ua = navigator.userAgent;
+  const touchMac = /Macintosh/.test(ua) && navigator.maxTouchPoints > 1;
+  const os = /Android/i.test(ua) ? 'android'
+    : (/iPhone|iPad|iPod/.test(ua) || touchMac) ? 'ios'
+    : /Windows/.test(ua) ? 'windows'
+    : /Macintosh|Mac OS X/.test(ua) ? 'mac' : null;
+  const OS_INFO = {
+    mac:     {label:'Download for Mac',     icon:'apple-logo',    asset:'dmg'},
+    windows: {label:'Download for Windows', icon:'windows-logo',  asset:'win'},
+    android: {label:'Download for Android', icon:'android-logo',  asset:'apk'},
+    ios:     {label:'Download for iPhone',  icon:'device-mobile', asset:'ipa'}
+  };
+  if (os) {
+    const card = document.querySelector(`.dl[data-os="${os}"]`);
+    if (card) { card.classList.add('mine'); card.querySelector('.you').hidden = false; card.parentNode.prepend(card); }
+    document.querySelectorAll('[data-cta-label]').forEach(el => el.textContent = OS_INFO[os].label);
+    document.querySelectorAll('[data-cta-icon] use').forEach(el => el.setAttribute('href', '#i-' + OS_INFO[os].icon));
+  }
+
+  /* Latest release from GitHub */
+  const fmtSize = b => b >= 1e6 ? (b / 1048576).toFixed(1) + ' MB' : Math.round(b / 1024) + ' KB';
+  const MATCH = {dmg:/\.dmg$/i, win:/win-x64\.exe$/i, portable:/portable\.exe$/i, apk:/\.apk$/i, ipa:/\.ipa$/i};
+
+  fetch(`https://api.github.com/repos/${REPO}/releases/latest`, {headers:{Accept:'application/vnd.github+json'}})
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(rel => {
+      const v = (rel.tag_name || '').replace(/^v/, '');
+      document.querySelector('[data-version]').textContent = 'v' + v;
+      document.querySelector('[data-date]').textContent = new Date(rel.published_at).toLocaleDateString(undefined, {day:'numeric', month:'long', year:'numeric'});
+      document.querySelectorAll('[data-release-link]').forEach(a => a.href = rel.html_url);
+      const upd = document.querySelector('[data-update-version]'); if (upd) upd.textContent = 'MK PDF ' + v;
+      document.querySelectorAll('[data-asset]').forEach(a => {
+        const asset = (rel.assets || []).find(x => MATCH[a.dataset.asset].test(x.name));
+        const size = a.querySelector('.size');
+        if (asset) {
+          a.href = asset.browser_download_url;
+          a.setAttribute('download', '');
+          a.setAttribute('aria-label', `Download ${asset.name}, ${fmtSize(asset.size)}`);
+          size.textContent = fmtSize(asset.size);
+        } else size.textContent = 'See release';
+      });
+      if (os) {
+        const mine = document.querySelector(`.dl[data-os="${os}"] [data-asset="${OS_INFO[os].asset}"]`);
+        if (mine && mine.hasAttribute('download')) document.querySelectorAll('[data-primary-cta]').forEach(b => { b.href = mine.href; b.setAttribute('download', ''); });
+      }
+    })
+    .catch(() => {
+      document.querySelectorAll('.skel').forEach(s => s.remove());
+      document.querySelector('[data-error]').classList.add('show');
+      document.querySelector('[data-version]').textContent = 'on GitHub';
+      document.querySelector('[data-date]').textContent = 'see release page';
+      document.querySelectorAll('[data-asset] .size').forEach(s => s.textContent = 'GitHub');
+      document.querySelectorAll('[data-asset]').forEach(a => a.href = RELEASES);
+    });
+
+  /* Scroll reveals, once */
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }), {rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(el => {
+    const sib = [...el.parentElement.children].filter(c => c.classList.contains('reveal')).indexOf(el);
+    if (!reduce) el.style.transitionDelay = Math.min(sib, 6) * 60 + 'ms';
+    io.observe(el);
+  });
+
+  /* Tagline: words light up one at a time */
+  const tag = document.querySelector('[data-tagline]');
+  if (tag) {
+    const wrapWords = (node, hl) => {
+      [...node.childNodes].forEach(n => {
+        if (n.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(part => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.append(part); return; }
+            const s = document.createElement('span'); s.className = 'w' + (hl ? ' hl' : ''); s.textContent = part; frag.append(s);
+          });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1) wrapWords(n, hl || n.classList.contains('hl'));
+      });
+    };
+    wrapWords(tag, false);
+    const words = [...tag.querySelectorAll('.w')];
+    if (!reduce) {
+      const wio = new IntersectionObserver(entries => {
+        entries.filter(e => e.isIntersecting)
+          .sort((a, b) => words.indexOf(a.target) - words.indexOf(b.target))
+          .forEach((e, k) => { e.target.style.transitionDelay = k * 70 + 'ms'; e.target.classList.add('on'); wio.unobserve(e.target); });
+      }, {rootMargin:'0px 0px -45% 0px'});
+      words.forEach(w => wio.observe(w));
+    } else words.forEach(w => w.classList.add('on'));
+  }
+
+  /* Hero: retype the date in the mock page */
+  const typed = document.querySelector('[data-typed]');
+  if (typed && !reduce) {
+    const phrases = ['14 March 2027', '2 April 2027', '30 June 2027'];
+    let p = 0, i = phrases[0].length, deleting = true;
+    const tick = () => {
+      if (deleting) {
+        i--; typed.textContent = phrases[p].slice(0, i);
+        if (i <= 0) { deleting = false; p = (p + 1) % phrases.length; }
+        setTimeout(tick, 45);
+      } else {
+        const next = phrases[p]; i++; typed.textContent = next.slice(0, i);
+        if (i >= next.length) { deleting = true; setTimeout(tick, 2400); } else setTimeout(tick, 90);
+      }
+    };
+    setTimeout(tick, 2200);
+  }
+
+  /* Mobile menu */
+  const header = document.getElementById('site-header');
+  const toggle = header.querySelector('.menu-toggle');
+  const panel = document.getElementById('mobile-menu');
+  const links = [...panel.querySelectorAll('a')];
+  const setMenu = open => {
+    header.classList.toggle('menu-open', open);
+    toggle.setAttribute('aria-expanded', open);
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    panel.setAttribute('aria-hidden', !open);
+    links.forEach((a, k) => { a.style.transitionDelay = open ? Math.min(k * 60, 400) + 'ms' : '0ms'; a.tabIndex = open ? 0 : -1; });
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+  links.forEach(a => { a.tabIndex = -1; a.addEventListener('click', () => setMenu(false)); });
+  toggle.addEventListener('click', () => setMenu(!header.classList.contains('menu-open')));
+  addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+
+  /* Current section in the nav */
+  const navLinks = [...document.querySelectorAll('.nav-links a, .mobile-menu a')];
+  const spy = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    navLinks.forEach(a => a.getAttribute('href') === '#' + e.target.id ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current'));
+  }), {rootMargin:'-45% 0px -50% 0px'});
+  ['features','toolkit','how','download','faq'].forEach(id => spy.observe(document.getElementById(id)));
+})();
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"Is MK PDF free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Every version on the release page is a free download for Mac, Windows, Android and iPhone, with no account and no ads."}},
+  {"@type":"Question","name":"Are my documents uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Editing, signing, text recognition, compression and conversion all happen on your device. MK PDF has no server and collects no data."}},
+  {"@type":"Question","name":"Does it really change the text, or draw over it?","acceptedAnswer":{"@type":"Answer","text":"It changes the text. The original letters are removed from the page and the new words are written with the same font, so the result is still searchable, selectable text."}},
+  {"@type":"Question","name":"Can I edit a scanned document?","acceptedAnswer":{"@type":"Answer","text":"Yes. MK PDF recognizes the text offline first, then paints over the old line in the paper colour and writes the new words in the ink colour."}},
+  {"@type":"Question","name":"Is every feature on every platform?","acceptedAnswer":{"@type":"Answer","text":"The AI assistant is on the Mac only, and translation is on the Mac and on iPhone with iOS 18 or later. Everything else is the same everywhere."}},
+  {"@type":"Question","name":"How do I install it on iPhone?","acceptedAnswer":{"@type":"Answer","text":"Sign the IPA with a sideloading tool such as AltStore or Sideloadly and your Apple ID. With a free Apple ID it has to be signed again every 7 days."}},
+  {"@type":"Question","name":"How do updates work?","acceptedAnswer":{"@type":"Answer","text":"MK PDF checks for a new release when it opens and every hour, then downloads and installs it over itself and restarts."}}
+  ]
+}
+</script>
+</body>
+</html>
