@@ -17,6 +17,7 @@ View, edit (real text and images, including scans), sign, organize and convert P
 
 ## Recent changes
 
+- 2026-11-27: **Website security headers** (MK Apps security review): CSP, HSTS, X-Frame-Options DENY, nosniff, Referrer-Policy and Permissions-Policy for every page, in `docs/_headers`. The CSP lists exactly the hosts the site uses (Google Fonts, GitHub API, Cloudflare Web Analytics); if you add a new script, font, embed or API host, add it to the CSP or it will be blocked.
 - 2026-11-26: Landing page with live download links for every platform, redesigned; auto-deploy (PR #2); koussa.net invite (PR #3); SEO/share previews, 1200x630 share image (PR #4); recon notes (PR #1).
 
 ## Open items
